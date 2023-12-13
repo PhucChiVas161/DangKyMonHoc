@@ -1,0 +1,572 @@
+HTTP/2 200 OK
+Cache-Control: private
+Content-Type: text/html; charset=utf-8
+Vary: Accept-Encoding
+Server: Microsoft-IIS/10.0
+X-Aspnetmvc-Version: 4.0
+X-Aspnet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+Date: Wed, 13 Dec 2023 04:28:02 GMT
+Content-Length: 42249
+
+
+
+
+<fieldset>
+    <legend><b style="color:blue;font-size:14px">Ngo&#224;i kế hoạch</b></legend>
+    <div id="DanhSachLop">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã học phần</th>
+                        <th>Tên học phần</th>
+                        <th>STC</th>
+                        <th>Số lượng LHP</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                                <tr>
+                                    <td colspan="6" style="font-weight:bold;text-align:left;font-size:14px">Bắt buộc</td>
+                                </tr>
+                                        <tr>
+                                            <td style="text-align:center">1</td>
+                                            <td style="text-align:center">71ITDS30103</td>
+                                            <td>C&#225;c nền tảng ph&#225;t triển phần mềm</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">26</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="D39QUGcKZ+N9ql2S4KQwvw==" href="javascript:GetClassStudyUnit('D39QUGcKZ+N9ql2S4KQwvw==','C&#225;c nền tảng ph&#225;t triển phần mềm','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">2</td>
+                                            <td style="text-align:center">71POLS10032</td>
+                                            <td>Chủ nghĩa x&#227; hội khoa học</td>
+                                            <td style="text-align:center">2.0</td>
+                                            <td style="text-align:center">14</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="Xj/lgCysKDJ8tCLdT09GGA==" href="javascript:GetClassStudyUnit('Xj/lgCysKDJ8tCLdT09GGA==','Chủ nghĩa x&#227; hội khoa học','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">3</td>
+                                            <td style="text-align:center">71NAD110013</td>
+                                            <td>GDQP1: Đường lối QP v&#224; AN của ĐCSVN</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">28</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="dYXcr8dgp5Pu7uP6v2hb4A==" href="javascript:GetClassStudyUnit('dYXcr8dgp5Pu7uP6v2hb4A==','GDQP1: Đường lối QP v&#224; AN của ĐCSVN','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">4</td>
+                                            <td style="text-align:center">71NAD210022</td>
+                                            <td>GDQP2: C&#244;ng t&#225;c quốc ph&#242;ng v&#224; an ninh</td>
+                                            <td style="text-align:center">2.0</td>
+                                            <td style="text-align:center">24</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="dYXcr8dgp5P1Y5+87VJC5w==" href="javascript:GetClassStudyUnit('dYXcr8dgp5P1Y5+87VJC5w==','GDQP2: C&#244;ng t&#225;c quốc ph&#242;ng v&#224; an ninh','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">5</td>
+                                            <td style="text-align:center">71POLE10022</td>
+                                            <td>Kinh tế ch&#237;nh trị M&#225;c-L&#234;nin</td>
+                                            <td style="text-align:center">2.0</td>
+                                            <td style="text-align:center">62</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="Xj/lgCysKDL5mgpIM974Mw==" href="javascript:GetClassStudyUnit('Xj/lgCysKDL5mgpIM974Mw==','Kinh tế ch&#237;nh trị M&#225;c-L&#234;nin','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">6</td>
+                                            <td style="text-align:center">71SSK110023</td>
+                                            <td>Kỹ năng c&#244;ng d&#226;n to&#224;n cầu</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">40</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="Jis+WAj+TJl2eWisRd/Fuw==" href="javascript:GetClassStudyUnit('Jis+WAj+TJl2eWisRd/Fuw==','Kỹ năng c&#244;ng d&#226;n to&#224;n cầu','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">7</td>
+                                            <td style="text-align:center">71ITSE30103</td>
+                                            <td>Kỹ thuật lập tr&#236;nh</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">24</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="ADq7aM2MSSe1DlzbMUVsmg==" href="javascript:GetClassStudyUnit('ADq7aM2MSSe1DlzbMUVsmg==','Kỹ thuật lập tr&#236;nh','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">8</td>
+                                            <td style="text-align:center">71POLC10052</td>
+                                            <td>Lịch sử Đảng Cộng sản Việt Nam</td>
+                                            <td style="text-align:center">2.0</td>
+                                            <td style="text-align:center">56</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="Xj/lgCysKDK929K5aOtJ9g==" href="javascript:GetClassStudyUnit('Xj/lgCysKDK929K5aOtJ9g==','Lịch sử Đảng Cộng sản Việt Nam','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">9</td>
+                                            <td style="text-align:center">71ENVH10012</td>
+                                            <td>M&#244;i trường v&#224; con người</td>
+                                            <td style="text-align:center">2.0</td>
+                                            <td style="text-align:center">30</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="8lz4SiDNcZUpffqQ3MaZzA==" href="javascript:GetClassStudyUnit('8lz4SiDNcZUpffqQ3MaZzA==','M&#244;i trường v&#224; con người','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">10</td>
+                                            <td style="text-align:center">71ITNW30103</td>
+                                            <td>Nhập m&#244;n Mạng m&#225;y t&#237;nh v&#224; điện to&#225;n đ&#225;m m&#226;y</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">24</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="VxcJCyCbEJftM6bbMPjmVA==" href="javascript:GetClassStudyUnit('VxcJCyCbEJftM6bbMPjmVA==','Nhập m&#244;n Mạng m&#225;y t&#237;nh v&#224; điện to&#225;n đ&#225;m m&#226;y','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">11</td>
+                                            <td style="text-align:center">71LAWG10012</td>
+                                            <td>Ph&#225;p luật đại cương</td>
+                                            <td style="text-align:center">2.0</td>
+                                            <td style="text-align:center">22</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="ALe68uUmvUpVYq7k+EBnVQ==" href="javascript:GetClassStudyUnit('ALe68uUmvUpVYq7k+EBnVQ==','Ph&#225;p luật đại cương','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">12</td>
+                                            <td style="text-align:center">71ITSE41503</td>
+                                            <td>Quản l&#253; dự &#225;n phần mềm</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">24</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="ADq7aM2MSSeqAh0ZR+wu+w==" href="javascript:GetClassStudyUnit('ADq7aM2MSSeqAh0ZR+wu+w==','Quản l&#253; dự &#225;n phần mềm','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">13</td>
+                                            <td style="text-align:center">71ITDS40403</td>
+                                            <td>Số h&#243;a v&#224; quản trị th&#244;ng tin số</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">7</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="D39QUGcKZ+NMCqh9k9ijAQ==" href="javascript:GetClassStudyUnit('D39QUGcKZ+NMCqh9k9ijAQ==','Số h&#243;a v&#224; quản trị th&#244;ng tin số','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">14</td>
+                                            <td style="text-align:center">DTN0014</td>
+                                            <td>Thực h&#224;nh Đại số tuyến t&#237;nh</td>
+                                            <td style="text-align:center">1.0</td>
+                                            <td style="text-align:center">1</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="ZoJdJbrERexeY+K/TE5Y9Q==" href="javascript:GetClassStudyUnit('ZoJdJbrERexeY+K/TE5Y9Q==','Thực h&#224;nh Đại số tuyến t&#237;nh','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">15</td>
+                                            <td style="text-align:center">DTN0046</td>
+                                            <td>Thực h&#224;nh To&#225;n cao cấp</td>
+                                            <td style="text-align:center">1.0</td>
+                                            <td style="text-align:center">1</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="ZoJdJbrERey/4gJlYnCbtA==" href="javascript:GetClassStudyUnit('ZoJdJbrERey/4gJlYnCbtA==','Thực h&#224;nh To&#225;n cao cấp','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">16</td>
+                                            <td style="text-align:center">DTN0045</td>
+                                            <td>To&#225;n cao cấp (Giải t&#237;ch)</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">1</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="ZoJdJbrEReyd3ZLAaK/FHA==" href="javascript:GetClassStudyUnit('ZoJdJbrEReyd3ZLAaK/FHA==','To&#225;n cao cấp (Giải t&#237;ch)','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">17</td>
+                                            <td style="text-align:center">71ITMA10104</td>
+                                            <td>To&#225;n cao cấp v&#224; ứng dụng</td>
+                                            <td style="text-align:center">4.0</td>
+                                            <td style="text-align:center">24</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="ADLclne1FuymGcVCjT4t7g==" href="javascript:GetClassStudyUnit('ADLclne1FuymGcVCjT4t7g==','To&#225;n cao cấp v&#224; ứng dụng','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">18</td>
+                                            <td style="text-align:center">71ITMA10403</td>
+                                            <td>To&#225;n rời rạc</td>
+                                            <td style="text-align:center">4.0</td>
+                                            <td style="text-align:center">28</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="ADLclne1FuzR8YcThxND4A==" href="javascript:GetClassStudyUnit('ADLclne1FuzR8YcThxND4A==','To&#225;n rời rạc','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">19</td>
+                                            <td style="text-align:center">71POLP10013</td>
+                                            <td>Triết học M&#225;c-L&#234;nin</td>
+                                            <td style="text-align:center">3.0</td>
+                                            <td style="text-align:center">16</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="Xj/lgCysKDJggccgqFFzAQ==" href="javascript:GetClassStudyUnit('Xj/lgCysKDJggccgqFFzAQ==','Triết học M&#225;c-L&#234;nin','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">20</td>
+                                            <td style="text-align:center">71POLH10042</td>
+                                            <td>Tư tưởng Hồ Ch&#237; Minh</td>
+                                            <td style="text-align:center">2.0</td>
+                                            <td style="text-align:center">26</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="Xj/lgCysKDI2n0rZt63Ffg==" href="javascript:GetClassStudyUnit('Xj/lgCysKDI2n0rZt63Ffg==','Tư tưởng Hồ Ch&#237; Minh','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center">21</td>
+                                            <td style="text-align:center">71PHYS10022</td>
+                                            <td>Vật l&#253; đại cương 2</td>
+                                            <td style="text-align:center">2.0</td>
+                                            <td style="text-align:center">1</td>
+
+                                            <!-- nut dang ky-->
+                                            <td align="center" style="text-align:right">
+                                                    <a id="E3K6s5mJScOoQ/N0pqFfgA==" href="javascript:GetClassStudyUnit('E3K6s5mJScOoQ/N0pqFfgA==','Vật l&#253; đại cương 2','NKH', '')" style="display: block;"><b>[Đăng ký]</b></a>
+
+                                                
+                                            </td>
+                                        </tr>
+                                <tr>
+                                    <td colspan="6" style="font-weight:bold;text-align:left;font-size:14px">Tự chọn</td>
+                                </tr>
+                                            <tr>
+                                                <td style="text-align:center">1</td>
+                                                <td style="text-align:center">71ITNW30303</td>
+                                                <td>An ninh Mạng m&#225;y t&#237;nh</td>
+                                                <td style="text-align:center">3.0</td>
+                                                <td style="text-align:center">12</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="VxcJCyCbEJchLuKcJuijMg==" href="javascript:GetClassStudyUnit('VxcJCyCbEJchLuKcJuijMg==','An ninh Mạng m&#225;y t&#237;nh','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">2</td>
+                                                <td style="text-align:center">71ITNW30203</td>
+                                                <td>Hệ điều h&#224;nh v&#224; lập tr&#236;nh Linux</td>
+                                                <td style="text-align:center">3.0</td>
+                                                <td style="text-align:center">3</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="VxcJCyCbEJfpTI8kwHSzhA==" href="javascript:GetClassStudyUnit('VxcJCyCbEJfpTI8kwHSzhA==','Hệ điều h&#224;nh v&#224; lập tr&#236;nh Linux','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">3</td>
+                                                <td style="text-align:center">71ITSE41603</td>
+                                                <td>Kiểm thử tự động</td>
+                                                <td style="text-align:center">3.0</td>
+                                                <td style="text-align:center">9</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="ADq7aM2MSSecU6TNwkF2qA==" href="javascript:GetClassStudyUnit('ADq7aM2MSSecU6TNwkF2qA==','Kiểm thử tự động','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">4</td>
+                                                <td style="text-align:center">71ITSE30403</td>
+                                                <td>Lập tr&#236;nh ứng dụng Java</td>
+                                                <td style="text-align:center">3.0</td>
+                                                <td style="text-align:center">24</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="ADq7aM2MSScKZZeqAWblow==" href="javascript:GetClassStudyUnit('ADq7aM2MSScKZZeqAWblow==','Lập tr&#236;nh ứng dụng Java','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">5</td>
+                                                <td style="text-align:center">71ITDS40503</td>
+                                                <td>M&#227; h&#243;a v&#224; an to&#224;n dữ liệu</td>
+                                                <td style="text-align:center">3.0</td>
+                                                <td style="text-align:center">8</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="D39QUGcKZ+PjBTLNCpU0hg==" href="javascript:GetClassStudyUnit('D39QUGcKZ+PjBTLNCpU0hg==','M&#227; h&#243;a v&#224; an to&#224;n dữ liệu','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">6</td>
+                                                <td style="text-align:center">71ITIS30303</td>
+                                                <td>Quản l&#253; Dự &#225;n c&#244;ng nghệ th&#244;ng tin</td>
+                                                <td style="text-align:center">3.0</td>
+                                                <td style="text-align:center">12</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="Q5pdeHggX1OBPqsO1fnBUA==" href="javascript:GetClassStudyUnit('Q5pdeHggX1OBPqsO1fnBUA==','Quản l&#253; Dự &#225;n c&#244;ng nghệ th&#244;ng tin','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">7</td>
+                                                <td style="text-align:center">71ITSE41803</td>
+                                                <td>Thiết kế kiến tr&#250;c phần mềm</td>
+                                                <td style="text-align:center">3.0</td>
+                                                <td style="text-align:center">5</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="ADq7aM2MSSdKbqRhsStrkg==" href="javascript:GetClassStudyUnit('ADq7aM2MSSdKbqRhsStrkg==','Thiết kế kiến tr&#250;c phần mềm','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6" style="font-weight:bold;text-align:left;font-size:14px">Tự chọn TC004 (Chọn 4.00 t&#237;n chỉ)</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">1</td>
+                                                <td style="text-align:center">71PESW10042</td>
+                                                <td>Bơi lội</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">68</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="oWs1JpVGDmOTk0zx5ViETg==" href="javascript:GetClassStudyUnit('oWs1JpVGDmOTk0zx5ViETg==','Bơi lội','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">2</td>
+                                                <td style="text-align:center">71PETT10012</td>
+                                                <td>B&#243;ng b&#224;n</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">5</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="FLdMBwjGMKlaGcGnMNv+lA==" href="javascript:GetClassStudyUnit('FLdMBwjGMKlaGcGnMNv+lA==','B&#243;ng b&#224;n','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">3</td>
+                                                <td style="text-align:center">71PEVB10022</td>
+                                                <td>B&#243;ng chuyền</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">30</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="Obtr3QyqAjTrLbB8sIu2JA==" href="javascript:GetClassStudyUnit('Obtr3QyqAjTrLbB8sIu2JA==','B&#243;ng chuyền','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">4</td>
+                                                <td style="text-align:center">71PEBB10032</td>
+                                                <td>B&#243;ng rổ</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">20</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="gWJF2KpgNqWerIkLK+IkgA==" href="javascript:GetClassStudyUnit('gWJF2KpgNqWerIkLK+IkgA==','B&#243;ng rổ','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">5</td>
+                                                <td style="text-align:center">71PEKC10062</td>
+                                                <td>Cờ vua</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">8</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="vnhMaDDQCAZItG/WQdZbnw==" href="javascript:GetClassStudyUnit('vnhMaDDQCAZItG/WQdZbnw==','Cờ vua','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">6</td>
+                                                <td style="text-align:center">71PEFU10082</td>
+                                                <td>Futsal</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">5</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="uaFFNCNfiAyRgxx7bssgkQ==" href="javascript:GetClassStudyUnit('uaFFNCNfiAyRgxx7bssgkQ==','Futsal','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">7</td>
+                                                <td style="text-align:center">71PEYO10142</td>
+                                                <td>Hatha yoga</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">27</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="FssdJDn6Bimg4j3feUVXag==" href="javascript:GetClassStudyUnit('FssdJDn6Bimg4j3feUVXag==','Hatha yoga','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">8</td>
+                                                <td style="text-align:center">71PEDA10102</td>
+                                                <td>Khi&#234;u vũ</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">22</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="y6IyhmtMhLe/ycPnWQPcBw==" href="javascript:GetClassStudyUnit('y6IyhmtMhLe/ycPnWQPcBw==','Khi&#234;u vũ','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">9</td>
+                                                <td style="text-align:center">71PESC10112</td>
+                                                <td>Leo n&#250;i thể thao</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">5</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="oWs1JpVGDmNAeAY4WmabJA==" href="javascript:GetClassStudyUnit('oWs1JpVGDmNAeAY4WmabJA==','Leo n&#250;i thể thao','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">10</td>
+                                                <td style="text-align:center">71PETE10122</td>
+                                                <td>Tennis</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">5</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="FLdMBwjGMKkgKCxav+jJxw==" href="javascript:GetClassStudyUnit('FLdMBwjGMKkgKCxav+jJxw==','Tennis','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">11</td>
+                                                <td style="text-align:center">71PEMA10132</td>
+                                                <td>V&#245; thuật</td>
+                                                <td style="text-align:center">2.0</td>
+                                                <td style="text-align:center">20</td>
+
+                                                <!-- nut dang ky-->
+                                                <td align="center" style="text-align:right">
+                                                        <a id="VRp2sISs6lMG4OIpip5NsA==" href="javascript:GetClassStudyUnit('VRp2sISs6lMG4OIpip5NsA==','V&#245; thuật','NKH',  '')" style="display: block;"><b>[Đăng ký]</b></a>
+                                                    
+                                                </td>
+                                            </tr>
+
+                </tbody>
+            </table>
+
+    </div>
+</fieldset>

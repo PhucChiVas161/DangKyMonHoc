@@ -1,0 +1,17 @@
+GET /DangKyHocPhan/KetQuaDangKy/1 HTTP/2
+Host: regist.vlu.edu.vn
+Cookie: ASP.NET_SessionId=rg5tupemy011kayv5d5300r5; UserID=207CT40540
+Sec-Ch-Ua: "Not_A Brand";v="8", "Chromium";v="120"
+Accept: text/html, */*; q=0.01
+X-Requested-With: XMLHttpRequest
+Sec-Ch-Ua-Mobile: ?0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.71 Safari/537.36
+Sec-Ch-Ua-Platform: "Windows"
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: cors
+Sec-Fetch-Dest: empty
+Referer: https://regist.vlu.edu.vn/DangKyHocPhan
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Priority: u=1, i
+

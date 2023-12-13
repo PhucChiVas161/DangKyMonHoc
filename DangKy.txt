@@ -1,0 +1,11 @@
+HTTP/2 200 OK
+Cache-Control: private
+Content-Type: application/json; charset=utf-8
+Server: Microsoft-IIS/10.0
+X-Aspnetmvc-Version: 4.0
+X-Aspnet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+Date: Wed, 13 Dec 2023 08:54:25 GMT
+Content-Length: 85
+
+{"State":true,"Obj":true,"Obj1":null,"Obj2":null,"Msg":"Đăng ký thành công ..."}

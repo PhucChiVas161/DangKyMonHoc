@@ -1,906 +1,0 @@
-HTTP/2 200 OK
-Cache-Control: private
-Content-Type: text/html; charset=utf-8
-Vary: Accept-Encoding
-Server: Microsoft-IIS/10.0
-X-Aspnetmvc-Version: 4.0
-X-Aspnet-Version: 4.0.30319
-X-Powered-By: ASP.NET
-Date: Wed, 13 Dec 2023 08:53:47 GMT
-Content-Length: 71044
-
-
-
-
-<script>
-    // da kiem tra
-    function doSubmit() {
-        document.forms.Frm.hdID.value = "";
-        for (var i = 0; i < document.forms.Frm.elements.length; i++) {
-            if (document.forms.Frm.elements[i].type == "radio") {
-                if (document.forms.Frm.elements[i].checked == true) {
-                    document.forms.Frm.hdID.value += document.forms.Frm.elements[i].id + "|";
-                }
-            }
-        }
-    }
-
-    function myFunctionToggle(myDIV, flag) {
-        var x = document.getElementById(myDIV);
-        //console.log(flag);
-        debugger;
-        if (flag == true) {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-    }
-
-    // da kiem tra
-    // acceptConflict<bool> cho phep dang ky trung lich
-    // classStudyUnitConflictId<string> LHP dang trung lich
-    // registType<string> hinh thuc dang ky
-    function btnRegist_Click(acceptConflict, classStudyUnitConflictId, registType, scheduleStudyUnitID) {
-        //$("body").css("cursor", "progress");
-        debugger;
-        $('#loading').show();               
-        $.ajax({
-            type: 'GET',
-            url: AddressUrl + '/DangKyHocPhan/DangKy?Hide=' + $('#chk_hidden').val() + '&acceptConflict=' + acceptConflict + '&classStudyUnitConflictId=' + classStudyUnitConflictId + '&RegistType=' + registType
-                + '&ScheduleStudyUnitID=' + scheduleStudyUnitID,
-            async: true,
-            dataType: 'json',
-            success: function (data) {
-                $('#loading').hide();
-                if (data.State) {// khi xu ly thanh cong
-                    
-                    if (data.Msg != "-1") {
-                        //DialogAlert("Thông báo", data.Msg, 'info');
-                        if (data.Obj == true) {// danh ky thanh cong                            
-                            alert(data.Msg);
-                            ToggleDislayStudyUnit(false); // tat moi layout
-                            GetClassStudyUnitRegisted(1); // llay tren ram, nguyen nhan la da reload lai khi dang ky thanh cong tren code server                          
-                            //myFunctionToggle($("#toggle_hidden").val(), false);                           
-                        }
-                        else {                            
-                            alert(data.Msg);
-                        }
-                    }
-                    
-                }
-                else {
-                    //$('#loading').hide();
-                    XuLyTrungLich(data, registType, scheduleStudyUnitID);
-                }
-                //$('#loading').hide();
-            }
-        }).fail(function (jqXHR, textStatus, err) {           
-            $('#loading').hide();
-        });
-        //$('#loading').hide();
-        
-    }
-
-    // da kiem tra
-    function XuLyTrungLich(data, registType, scheduleStudyUnitID) {
-        if (data.Obj == 1) {
-            $.messager.confirm(
-                "Thông báo",
-                data.Msg,
-                function (r) {
-                    if (r) {// chon ok
-                        if (data.Obj == 1) {// cho phep dk trung lich
-                            btnRegist_Click(true, data.Obj1, registType, scheduleStudyUnitID)// thuc hien lai lenh dang ky
-                        } else {
-                           // btnRegist_Click(false, data.Obj1, registType, scheduleStudyUnitID)// thuc hien lenh dang ky
-                        }
-                    }
-                    else {// chon cancel
-                        //btnRegist_Click(false, data.Obj1, registType, scheduleStudyUnitID)
-                        //if (data.Obj == 1) {
-                        //    btnRegist_Click(false, data.Obj1)
-                        //} else {
-                        //    btnRegist_Click(false, data.Obj1)
-                        //}
-                    }
-                }
-            );
-        }
-        else {
-            DialogAlert("Thông báo", data.Msg, "info");
-        }
-    }
-
-    // da kiem tra
-    function btnBack() {
-        ToggleDislayStudyUnit(false);
-        $('#cnDanhSachLHP').html("");
-    }
-
-    function btnGetChildOfThis(id, parent) {
-        //if ($('#tr-of-' + id).css('display') == 'none') {
-        //    $('#tr-of-' + id).css('display', '');
-        //}
-        //else {
-        //    $('#tr-of-' + id).css('display', 'none');
-        //}
-
-        var parentArray = parent.split(",");
-        for (i = 0; i < parentArray.length; i++) {
-            if (id != parentArray[i]) {
-                document.getElementById("tr-of-" + parentArray[i]).style.display = "none";
-            }
-            else {
-                var display = document.getElementById("tr-of-" + id).style.display;
-
-                if (display == 'none') {
-                    document.getElementById("tr-of-" + id).style.display = "";
-                }
-                else {
-                    document.getElementById("tr-of-" + id).style.display = "none";
-                }
-            }
-        }
-    }
-</script>
-
-<form name="Frm">
-    <fieldset>
-        <legend><b style="color:blue;font-size:14px">Học phần: C&#225;c nền tảng ph&#225;t triển phần mềm </b></legend>
-        <div class="cn-study-unit" style="max-height: 250px; overflow-x: scroll">
-            <table class="table table-hover" style="border:1px solid #333;">
-                <thead>
-                    <tr>
-                        <th class="col-md-1">Chọn</th>
-                        <th class="col-md-1">Loại</th>
-                        <th class="col-md-1">Mã LHP</th>
-                        <th class="col-md-2">Lớp sinh hoạt</th>
-                        
-                        <th class="col-md-1">SL còn lại</th>
-
-
-                        <th class="col-md-4">Lịch học</th>
-
-                            <th class="col-md-2">Số tiền</th>
-
-                        <th class="col-md-2">Ghi chú</th>
-                    </tr>
-                </thead>
-                <tbody>
-                                <tr>
-                                    <td style="text-align:center">
-                                        <input onclick="btnGetChildOfThis('232_71ITDS30103_01', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
-                                               type="radio"
-                                               class="classCheckChon"
-                                               style="margin-top: -7px !important;"
-                                                id="7TE1vpkvxwu2qOR0Rzy3BmoDwPL2whP2Dif2s9Nnbo9XQilZSt2Yyz+biCLonZi9+KWIOFCWJCc="                                                
-                                               name="theory"
-                                               
-                                               disabled />
-                                    </td>
-                                    <td style="text-align:center">L&#253; thuyết</td>
-                                    <td style="text-align:center"><b>232_71ITDS30103_01</b></td>
-                                    <td style="text-align:left">71K28CNTT2371K28CNTT2071K28CNTT0571K28CNTT2871K28CNTT0871K28CNTT2671K28CNTT0471K28CNTT0771K28CNTT1071K28CNTT1571K28CNTT0171K28HTTT0171K28CNTT2571K28CNTT1871K28CNTT1671K28CNTT1271K28CNT</td>
-                                    
-                                    <td style="text-align:center">0</td>
-
-
-                                    <td style="text-align:left">
-                                        <div class="td-schedule"> Thứ 7, tiết4-6,tuần 19-31, ONLINE<br/></div>
-                                    </td>
-
-                                        <td style="text-align:center"></td>
-
-                                    <td>Ms Team v&#224; Elearning (học với AWS)</td>
-                                </tr>
-                                    <tr class="tr-no-hover" style="background:#eee;display:none;transition-duration:400ms" id="tr-of-232_71ITDS30103_01">
-                                        <td colspan="8">
-                                            <span style="font-weight:bold;margin-top:10px">
-                                                LHP thực hành tương ứng với LHP lý thuyết 232_71ITDS30103_01
-                                                <a href="javascript:btnGetChildOfThis('232_71ITDS30103_01', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')" style="float:right;font-weight:bold">[Thu nhỏ]</a>
-                                            </span>
-                                            <div style="margin-bottom:28px;max-height:500px">
-                                                <table class="table table-hover" style="border:1px solid #333">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center" class="col-md-1">Chọn</th>
-                                                            <th style="text-align:center" class="col-md-1">Mã LHP</th>
-                                                            
-                                                            <th class="col-md-1">SL còn lại</th>
-
-
-                                                            <th class="col-md-6">Lịch học</th>
-                                                            <th class="col-md-2">Ghi chú</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BmK0uGS+VHWgmw8Y+WtcS1xb0WBknz+qCeMKcUSCigwy6F2QRJcz3aHeeUG9UvwCL4uhGxEySupJ"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_01"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0101</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 3, tiết4-6,tuần 20-32, ONLINE<br/></div></td>
-                                                                        <td>Ms Team v&#224; Elearning (học với AWS)</td>
-                                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <span style="padding-top:5px;float:right"><b>Tổng: 1 LHP thực hành</b></span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <tr>
-                                    <td style="text-align:center">
-                                        <input onclick="btnGetChildOfThis('232_71ITDS30103_02', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
-                                               type="radio"
-                                               class="classCheckChon"
-                                               style="margin-top: -7px !important;"
-                                                id="7TE1vpkvxwu2qOR0Rzy3Bux+wxM5XbO95MKrEcRVLCNK3Z7xTYblZVhuu7GqZGR3gYzlVz184/E="                                                
-                                               name="theory"
-                                               
-                                               disabled />
-                                    </td>
-                                    <td style="text-align:center">L&#253; thuyết</td>
-                                    <td style="text-align:center"><b>232_71ITDS30103_02</b></td>
-                                    <td style="text-align:left">71K28CNTT2471K28CNTT1971K28CNTT1271K28CNTT2571K28CNTT2671K28CNTT1771K28CNTT1571K28CNTT0471K28CNTT2871K28CNTT2271K28CNTT1171K28CNTT2371K28CNTT0971K28CNTT0671K28CNTT1071K28CNTT0371K28CNT</td>
-                                    
-                                    <td style="text-align:center">0</td>
-
-
-                                    <td style="text-align:left">
-                                        <div class="td-schedule"> Thứ 6,tiết 13-15, tuần: 19,20,21,25,26,27,28,29,30,31,CS3.F.03.06</div>
-                                    </td>
-
-                                        <td style="text-align:center"></td>
-
-                                    <td></td>
-                                </tr>
-                                    <tr class="tr-no-hover" style="background:#eee;display:none;transition-duration:400ms" id="tr-of-232_71ITDS30103_02">
-                                        <td colspan="8">
-                                            <span style="font-weight:bold;margin-top:10px">
-                                                LHP thực hành tương ứng với LHP lý thuyết 232_71ITDS30103_02
-                                                <a href="javascript:btnGetChildOfThis('232_71ITDS30103_02', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')" style="float:right;font-weight:bold">[Thu nhỏ]</a>
-                                            </span>
-                                            <div style="margin-bottom:28px;max-height:500px">
-                                                <table class="table table-hover" style="border:1px solid #333">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center" class="col-md-1">Chọn</th>
-                                                            <th style="text-align:center" class="col-md-1">Mã LHP</th>
-                                                            
-                                                            <th class="col-md-1">SL còn lại</th>
-
-
-                                                            <th class="col-md-6">Lịch học</th>
-                                                            <th class="col-md-2">Ghi chú</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3Bsz+OjS37o4WeNJCe70oPko/1XHDZgfrdwumy6E4GsZ5a35NnKScGv2qitPKNJXj3MSsrnXm+0H+"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_02"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0201</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 2, tiết13-15,tuần 20-32, CS3.G.08.04<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3Bh9lZfcPnFMVHGKB+xLv72Cbtu1QATQO2/cs5jRNvaD1221RztT3AH+Rdml7LAMyVjGaCEDSNnTw"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_02"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0202</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 7, tiết13-15,tuần 20-32, CS3.F.12.02<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BiyG5UfekL5MgWI6C/GpraLs62t+PjrJEVWpxIA7TkhtQgpATV0D/dqJu7yciTob14kvGP56vuKt"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_02"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0203</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 7, tiết13-15,tuần 20-32, CS3.F.12.02<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <span style="padding-top:5px;float:right"><b>Tổng: 3 LHP thực hành</b></span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <tr>
-                                    <td style="text-align:center">
-                                        <input onclick="btnGetChildOfThis('232_71ITDS30103_03', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
-                                               type="radio"
-                                               class="classCheckChon"
-                                               style="margin-top: -7px !important;"
-                                                id="7TE1vpkvxwu2qOR0Rzy3BuGdIFoux2GYOfRjA+0yfM/1zcCkuxwwNgFQpB7/wz+4y2DzUWjk++E="                                                
-                                               name="theory"
-                                               
-                                               disabled />
-                                    </td>
-                                    <td style="text-align:center">L&#253; thuyết</td>
-                                    <td style="text-align:center"><b>232_71ITDS30103_03</b></td>
-                                    <td style="text-align:left">71K28CNTT2171K28HTTT0171K28CNTT0571K28CNTT0171K28CNTT0971K28CNTT2771K28CNTT2671K28CNTT0471K28CNTT0371K28CNTT1871K28CNTT1571K28CNTT1271K28CNTT2271K28CNTT1071K28CNTT2871K28CNTT1971K28CNT</td>
-                                    
-                                    <td style="text-align:center">0</td>
-
-
-                                    <td style="text-align:left">
-                                        <div class="td-schedule"> Thứ 6,tiết 13-15, tuần: 19,20,21,25,26,27,28,29,30,31,CS3.F.10.01</div>
-                                    </td>
-
-                                        <td style="text-align:center"></td>
-
-                                    <td></td>
-                                </tr>
-                                    <tr class="tr-no-hover" style="background:#eee;display:none;transition-duration:400ms" id="tr-of-232_71ITDS30103_03">
-                                        <td colspan="8">
-                                            <span style="font-weight:bold;margin-top:10px">
-                                                LHP thực hành tương ứng với LHP lý thuyết 232_71ITDS30103_03
-                                                <a href="javascript:btnGetChildOfThis('232_71ITDS30103_03', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')" style="float:right;font-weight:bold">[Thu nhỏ]</a>
-                                            </span>
-                                            <div style="margin-bottom:28px;max-height:500px">
-                                                <table class="table table-hover" style="border:1px solid #333">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center" class="col-md-1">Chọn</th>
-                                                            <th style="text-align:center" class="col-md-1">Mã LHP</th>
-                                                            
-                                                            <th class="col-md-1">SL còn lại</th>
-
-
-                                                            <th class="col-md-6">Lịch học</th>
-                                                            <th class="col-md-2">Ghi chú</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BmRNJxuspkAVu84RlWzQUtywFavt/k0eOI17h99H1dPHP7+h5eP2S4QyXr6wElejxctkpoz39nnk"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_03"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0301</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 7, tiết13-15,tuần 20-32, CS3.G.08.04<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BntCvilPAemAJ4WJYKeWYsmJmgTbgfckwxjJgw8LhQ26eamjlMgzeR/8M6kiYRJEX7rzxyGd/HoA"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_03"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0302</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 5, tiết10-12,tuần 20-32, CS3.G.08.11<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BjilQ5SsW6ml2Bo+rJvFb4cKnI9Q8Pb79ydTss/QAPa6dnafM6TAKuH6BoQrACpVahJtY4KKVBY2"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_03"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0303</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 7, tiết13-15,tuần 20-32, CS2.A.05.08<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <span style="padding-top:5px;float:right"><b>Tổng: 3 LHP thực hành</b></span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <tr>
-                                    <td style="text-align:center">
-                                        <input onclick="btnGetChildOfThis('232_71ITDS30103_04', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
-                                               type="radio"
-                                               class="classCheckChon"
-                                               style="margin-top: -7px !important;"
-                                                id="7TE1vpkvxwu2qOR0Rzy3Bvx/dE3W9MkWoNyJu/z5CVikBHPCo7ToDwELqnl4dqdLqUXZSqScxCw="                                                
-                                               name="theory"
-                                               
-                                               disabled />
-                                    </td>
-                                    <td style="text-align:center">L&#253; thuyết</td>
-                                    <td style="text-align:center"><b>232_71ITDS30103_04</b></td>
-                                    <td style="text-align:left">71K28CNTT0971K28CNTT2571K28CNTT0571K28CNTT2371K28CNTT2671K28CNTT2171K28CNTT0371K28CNTT0871K28CNTT0771K28CNTT2271K28CNTT1071K28CNTT1571K28CNTT1871K28CNTT2771K28HTTT0171K28CNTT1671K28CNT</td>
-                                    
-                                    <td style="text-align:center">0</td>
-
-
-                                    <td style="text-align:left">
-                                        <div class="td-schedule"> Thứ 7, tiết7-9,tuần 19-31, CS3.F.10.01<br/></div>
-                                    </td>
-
-                                        <td style="text-align:center"></td>
-
-                                    <td></td>
-                                </tr>
-                                    <tr class="tr-no-hover" style="background:#eee;display:none;transition-duration:400ms" id="tr-of-232_71ITDS30103_04">
-                                        <td colspan="8">
-                                            <span style="font-weight:bold;margin-top:10px">
-                                                LHP thực hành tương ứng với LHP lý thuyết 232_71ITDS30103_04
-                                                <a href="javascript:btnGetChildOfThis('232_71ITDS30103_04', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')" style="float:right;font-weight:bold">[Thu nhỏ]</a>
-                                            </span>
-                                            <div style="margin-bottom:28px;max-height:500px">
-                                                <table class="table table-hover" style="border:1px solid #333">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center" class="col-md-1">Chọn</th>
-                                                            <th style="text-align:center" class="col-md-1">Mã LHP</th>
-                                                            
-                                                            <th class="col-md-1">SL còn lại</th>
-
-
-                                                            <th class="col-md-6">Lịch học</th>
-                                                            <th class="col-md-2">Ghi chú</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BvYbTnxcGCp4ifk4ceukJSoJvs4rpH0J0yzCxi550edcPNYdfXtWgzUNsAjBSfHON9ANFDct2l30"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_04"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0401</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 4, tiết10-12,tuần 20-32, CS1.A.04.01<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BohZf/0QRT6T/qqE2yf8VS49SEUfLSWDvod21PMCBcJp6zQXi5gkdT5haKHFkin8kbZtSfkR/001"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_04"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0402</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 6, tiết7-9,tuần 20-32, CS1.A.04.01<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BlohdxuNQ4YoYQ4IvVkZaJ0qcZI5S7HWqg9D0f3cw30Ps4XjJM2S+ozQEQDm4O23Svg2cZIxpnlj"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_04"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0403</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 5, tiết7-9,tuần 20-32, CS1.A.04.07<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <span style="padding-top:5px;float:right"><b>Tổng: 3 LHP thực hành</b></span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <tr>
-                                    <td style="text-align:center">
-                                        <input onclick="btnGetChildOfThis('232_71ITDS30103_05', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
-                                               type="radio"
-                                               class="classCheckChon"
-                                               style="margin-top: -7px !important;"
-                                                id="7TE1vpkvxwu2qOR0Rzy3BqjpNvs4y9N2PDwm8hz2L85+XAsbhi7O/golbfCzjdcLKc2CtMgh15A="                                                
-                                               name="theory"
-                                               
-                                                />
-                                    </td>
-                                    <td style="text-align:center">L&#253; thuyết</td>
-                                    <td style="text-align:center"><b>232_71ITDS30103_05</b></td>
-                                    <td style="text-align:left">71K28CNTT1371K28CNTT1071K28CNTT0671K28CNTT0271K28CNTT2571K28CNTT0371K28CNTT1271K28CNTT1871K28CNTT2171K28CNTT1571K28CNTT1671K28CNTT2771K28CNTT1771K28CNTT2271K28CNTT2671K28CNTT0971K28CNT</td>
-                                    
-                                    <td style="text-align:center">12</td>
-
-
-                                    <td style="text-align:left">
-                                        <div class="td-schedule"> Thứ 7, tiết10-12,tuần 19-31, CS3.F.10.01<br/></div>
-                                    </td>
-
-                                        <td style="text-align:center"></td>
-
-                                    <td></td>
-                                </tr>
-                                    <tr class="tr-no-hover" style="background:#eee;display:none;transition-duration:400ms" id="tr-of-232_71ITDS30103_05">
-                                        <td colspan="8">
-                                            <span style="font-weight:bold;margin-top:10px">
-                                                LHP thực hành tương ứng với LHP lý thuyết 232_71ITDS30103_05
-                                                <a href="javascript:btnGetChildOfThis('232_71ITDS30103_05', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')" style="float:right;font-weight:bold">[Thu nhỏ]</a>
-                                            </span>
-                                            <div style="margin-bottom:28px;max-height:500px">
-                                                <table class="table table-hover" style="border:1px solid #333">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center" class="col-md-1">Chọn</th>
-                                                            <th style="text-align:center" class="col-md-1">Mã LHP</th>
-                                                            
-                                                            <th class="col-md-1">SL còn lại</th>
-
-
-                                                            <th class="col-md-6">Lịch học</th>
-                                                            <th class="col-md-2">Ghi chú</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BpbsA0U0HlcubQ4Iz8ZHIFe9FCSW4c16t88PcqKBy7cu81Gjw13iFzykH28XFoX8BTS5jzkTJQVb"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_05"
-                                                                                   
-                                                                                    />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0501</td>
-                                                                        
-                                                                        <td style="text-align:center">6</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 6, tiết10-12,tuần 20-32, CS1.A.04.01<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3Bp6oWt6Lv/CRP2cVwlr2NNdRFtzTz2TlOpXCkyJiMr51XgxRbQduYQgNJ4cd5r13IMR49i3ycsKW"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_05"
-                                                                                   
-                                                                                    />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0502</td>
-                                                                        
-                                                                        <td style="text-align:center">5</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 3, tiết7-9,tuần 20-32, CS1.A.04.02<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BsQ+zZJixpY0a9wli3i1rdeZMEBKAsOp9SWk60sE801REaSLjR1o0bQx0ZqxcCGkY0ISqV8nVANQ"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_05"
-                                                                                   
-                                                                                    />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0503</td>
-                                                                        
-                                                                        <td style="text-align:center">1</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 5, tiết7-9,tuần 20-32, CS1.A.04.07<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <span style="padding-top:5px;float:right"><b>Tổng: 3 LHP thực hành</b></span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <tr>
-                                    <td style="text-align:center">
-                                        <input onclick="btnGetChildOfThis('232_71ITDS30103_06', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
-                                               type="radio"
-                                               class="classCheckChon"
-                                               style="margin-top: -7px !important;"
-                                                id="7TE1vpkvxwu2qOR0Rzy3Bijp0UrUyAaJQfByaoNVqNiTlIKffU5ZCEkYPyDjb3v3+PO8RYKZnxU="                                                
-                                               name="theory"
-                                               
-                                               disabled />
-                                    </td>
-                                    <td style="text-align:center">L&#253; thuyết</td>
-                                    <td style="text-align:center"><b>232_71ITDS30103_06</b></td>
-                                    <td style="text-align:left">71K28HTTT0171K28CNTT0871K28CNTT1471K28CNTT2071K28CNTT1971K28CNTT0671K28CNTT1871K28CNTT0771K28CNTT0571K28CNTT2171K28CNTT1071K28CNTT1571K28CNTT1671K28CNTT0471K28CNTT1771K28CNTT0271K28CNT</td>
-                                    
-                                    <td style="text-align:center">0</td>
-
-
-                                    <td style="text-align:left">
-                                        <div class="td-schedule"> Thứ 2,tiết 7-9, tuần: 19,20,21,25,26,27,28,29,30,31,CS3.F.11.01</div>
-                                    </td>
-
-                                        <td style="text-align:center"></td>
-
-                                    <td></td>
-                                </tr>
-                                    <tr class="tr-no-hover" style="background:#eee;display:none;transition-duration:400ms" id="tr-of-232_71ITDS30103_06">
-                                        <td colspan="8">
-                                            <span style="font-weight:bold;margin-top:10px">
-                                                LHP thực hành tương ứng với LHP lý thuyết 232_71ITDS30103_06
-                                                <a href="javascript:btnGetChildOfThis('232_71ITDS30103_06', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')" style="float:right;font-weight:bold">[Thu nhỏ]</a>
-                                            </span>
-                                            <div style="margin-bottom:28px;max-height:500px">
-                                                <table class="table table-hover" style="border:1px solid #333">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center" class="col-md-1">Chọn</th>
-                                                            <th style="text-align:center" class="col-md-1">Mã LHP</th>
-                                                            
-                                                            <th class="col-md-1">SL còn lại</th>
-
-
-                                                            <th class="col-md-6">Lịch học</th>
-                                                            <th class="col-md-2">Ghi chú</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BuUIpgmvytKlpq3RDjgJ8q0BW0uxdfuc+pgiAQdddNMUP81Wx4w9XtS++Mo1/wlXaGVqh9AN+uxx"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_06"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0601</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 3, tiết10-12,tuần 20-32, CS1.A.04.02<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3Bk1xWREgOGVyY//a23i4iVSijywlWkfNuMsZKkXk4dtUV+qATVVRNxujWyixpS/Z4EVubgyPsUZp"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_06"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0602</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 4, tiết7-9,tuần 20-32, CS1.A.04.02<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BqL6COVL9gx5wQ141NB50MWPbMEiv8VynadnMBYwidqShHOL5gvMhRAY5bg1H0Rt9XzZe/231znN"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_06"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0603</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 4, tiết10-12,tuần 20-32, CS1.A.04.02<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <span style="padding-top:5px;float:right"><b>Tổng: 3 LHP thực hành</b></span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <tr>
-                                    <td style="text-align:center">
-                                        <input onclick="btnGetChildOfThis('232_71ITDS30103_07', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
-                                               type="radio"
-                                               class="classCheckChon"
-                                               style="margin-top: -7px !important;"
-                                                id="7TE1vpkvxwu2qOR0Rzy3Bh9g9QxQUdxulmmMudCkoQdtefbQkixtRICk9OvVzWo8ASbzjzhdqlA="                                                
-                                               name="theory"
-                                               
-                                               disabled />
-                                    </td>
-                                    <td style="text-align:center">L&#253; thuyết</td>
-                                    <td style="text-align:center"><b>232_71ITDS30103_07</b></td>
-                                    <td style="text-align:left">71K28CNTT0771K28CNTT0171K28CNTT1971K28HTTT0171K28CNTT1671K28CNTT2371K28CNTT2071K28CNTT2871K28CNTT1271K28CNTT1371K28CNTT2571K28CNTT0971K28CNTT2471K28CNTT1771K28CNTT0471K28CNTT2671K28CNT</td>
-                                    
-                                    <td style="text-align:center">0</td>
-
-
-                                    <td style="text-align:left">
-                                        <div class="td-schedule"> Thứ 2,tiết 10-12, tuần: 19,20,21,25,26,27,28,29,30,31,CS3.F.11.01</div>
-                                    </td>
-
-                                        <td style="text-align:center"></td>
-
-                                    <td></td>
-                                </tr>
-                                    <tr class="tr-no-hover" style="background:#eee;display:none;transition-duration:400ms" id="tr-of-232_71ITDS30103_07">
-                                        <td colspan="8">
-                                            <span style="font-weight:bold;margin-top:10px">
-                                                LHP thực hành tương ứng với LHP lý thuyết 232_71ITDS30103_07
-                                                <a href="javascript:btnGetChildOfThis('232_71ITDS30103_07', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')" style="float:right;font-weight:bold">[Thu nhỏ]</a>
-                                            </span>
-                                            <div style="margin-bottom:28px;max-height:500px">
-                                                <table class="table table-hover" style="border:1px solid #333">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="text-align:center" class="col-md-1">Chọn</th>
-                                                            <th style="text-align:center" class="col-md-1">Mã LHP</th>
-                                                            
-                                                            <th class="col-md-1">SL còn lại</th>
-
-
-                                                            <th class="col-md-6">Lịch học</th>
-                                                            <th class="col-md-2">Ghi chú</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BrDKI+jGR2QEMkfidx64WPfnybU64PFzcYgp1JIHKyGfSDFGNEOnB4E5xnctIHmQSB7CdoGMeu+C"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_07"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0701</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 6, tiết7-9,tuần 20-32, CS1.A.04.02<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BhXANI4Y+flJ2myAmwqY1Gag1jrTBu+ZCt46tsZ/Kz1tYQ+90pp0dyOlayeYCwROqT3IUXQIS9Uq"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_07"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0702</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 6, tiết10-12,tuần 20-32, CS1.A.04.02<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td style="text-align:center">
-                                                                            <input type="radio"
-                                                                                   class="classCheckChon"
-                                                                                   style="margin-top: -7px !important;"
-                                                                                   id="7TE1vpkvxwu2qOR0Rzy3BuSXxGdSDtjIk5MkDU5dXJOXKXTCeL/mxt5Xv0ONJ0Y7WA9vaPzp5LaRC3dGf65nT8itIOewkmLl"                                                                                  
-                                                                                   name="practice_232_71ITDS30103_07"
-                                                                                   
-                                                                                   disabled />
-                                                                        </td>
-                                                                        <td style="text-align:center">232_71ITDS30103_0703</td>
-                                                                        
-                                                                        <td style="text-align:center">0</td>
-
-
-                                                                        <td style="text-align:left"><div class="td-schedule1"> Thứ 3, tiết7-9,tuần 20-32, CS1.A.04.03<br/></div></td>
-                                                                        <td></td>
-                                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                                <span style="padding-top:5px;float:right"><b>Tổng: 3 LHP thực hành</b></span>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                </tbody>
-            </table>
-        </div>
-        <div class="pull-right">
-            <!-- bien tam, dung khi dang ky-->
-            <input type="hidden" id="chk_hidden" name="hdID" value="" />
-            <input type="hidden" id="toggle_hidden" name="toggle" value="" />
-
-            <input style="width:80px" type="button" class="btn a_link btn-cus1" onclick="btnBack()" value="Quay về" />
-
-                <!--dang ky-->
-                <input style="width:80px" type="button" class="btn a_link btn-cus1" onclick="doSubmit(); btnRegist_Click(false,'','NKH',''); " value="Đăng ký" />
-        </div>
-    </fieldset>
-</form>
-

@@ -1,6 +1,3 @@
-HTTP/2 200 OK Cache-Control: private Content-Type: text/html; charset=utf-8 Vary: Accept-Encoding Server: Microsoft-IIS/10.0 X-Aspnetmvc-Version: 4.0
-X-Aspnet-Version: 4.0.30319 X-Powered-By: ASP.NET Date: Wed, 13 Dec 2023 04:28:02 GMT Content-Length: 42249
-
 <fieldset>
 	<legend><b style="color: blue; font-size: 14px">Ngo&#224;i kế hoạch</b></legend>
 	<div id="DanhSachLop">

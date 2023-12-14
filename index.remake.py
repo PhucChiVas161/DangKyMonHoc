@@ -3,6 +3,7 @@ import requests
 from tabulate import tabulate
 from dotenv import load_dotenv
 import os
+import json
 
 load_dotenv()
 
@@ -44,9 +45,8 @@ def display_course_list(session):
     elif choice == "2":
         typeId = "NKH"
 
-    response = session.get(
-        "https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id="
-    )
+    response = session.get(f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id="
+                           )
 
     if '<b style="color:red">Hệ Thống Đang Xử Lý. Quay lại sau 3 giây</b>' in response.text:
         print("Dizzconme web lol sập hoài. Vui lòng thử lại sau :)))))")
@@ -74,17 +74,60 @@ def display_course_list(session):
             data.append(row_data)
 
         headers = ['STT', 'Mã học phần', 'Tên học phần',
-                   'STC', 'Số lượng LHP', 'Mã lớp']
+                   'STC', 'Số lượng LHP', 'Mã lớp', 'Code lớp']
         print(tabulate(data, headers, tablefmt='grid'))
 
 
+def choice_cousre(session):
+    course_code = input("Nhập code: ")
+    response = session.get(f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={
+                           course_code}&registType=NKH&scheduleStudyUnitID=")
+    if '<b style="color:red">Hệ Thống Đang Xử Lý. Quay lại sau 3 giây</b>' in response.text:
+        print("Dizzconme web lol sập hoài. Vui lòng thử lại sau :)))))")
+    else:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        table = soup.find('table')
+        rows = table.find_all('tr')
+
+        data = []
+        for row in rows[1:]:  # Bỏ qua hàng tiêu đề
+            cells = row.find_all('td')
+            row_data = [cell.get_text(strip=True) for cell in cells]
+
+            # Lấy đoạn mã từ thẻ <input>
+            link = row.find('input')
+            if link:
+                id_attr = link.get('id')
+                row_data.append(id_attr)
+            else:
+                row_data.append('')
+
+            data.append(row_data)
+
+        headers = ["STT", "Loai", "Mã LHP",
+                   "Lớp sinh hoạt", "SL còn lại", "Lịch học", "Số tiền", "Ghi chú", "Code lớp"]
+        print(tabulate(data, headers, tablefmt='grid'))
+
+
+def register_course(session):
+    course_code = input("Nhập Code cần đăng ký: ")
+    response = session.get(
+        f"https://regist.vlu.edu.vn/DangKyHocPhan/DangKy?Hide={course_code}|&acceptConflict=false&classStudyUnitConflictId=&RegistType=NKH&ScheduleStudyUnitID=")
+    text = response.text
+    json_server = json.loads(text)
+    msg = json_server['Msg']
+    print(msg)
+
+
 def main():
+    os.system('cls' if os.name == 'nt' else 'clear')
     USER_NAME = os.getenv("USER_NAME")
     PASSWORD = os.getenv("PASSWORD")
-    print(USER_NAME, PASSWORD)
     session = login(USER_NAME, PASSWORD)
     if session:
         display_course_list(session)
+        choice_cousre(session)
+        register_course(session)
 
 
 if __name__ == "__main__":

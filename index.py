@@ -4,8 +4,8 @@ from tabulate import tabulate
 
 url = "https://regist.vlu.edu.vn"
 
-username = "207CT40540"
-password = "16012002"
+username = "207QT62733"
+password = "22072001"
 
 headers = {
     "Content-Type": "application/x-www-form-urlencoded"
@@ -66,7 +66,7 @@ if '<a href="/Login/Logout">Đăng xuất</a>' in response.text:
             data.append(row_data)
 
         headers = ['STT', 'Mã học phần', 'Tên học phần',
-                   'STC', 'Số lượng LHP', 'Mã lớp']
+                   'STC', 'Số lượng LHP', 'Mã lớp', 'Code lớp']
         print(tabulate(data, headers, tablefmt='grid'))
 
 else:

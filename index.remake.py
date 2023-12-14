@@ -6,6 +6,7 @@ import os
 
 load_dotenv()
 
+
 def login(username, password):
     url = "https://regist.vlu.edu.vn"
     headers = {
@@ -29,6 +30,7 @@ def login(username, password):
     else:
         print('Đăng nhập thất bại')
         return None
+
 
 def display_course_list(session):
     print("Lựa chọn:")
@@ -75,12 +77,15 @@ def display_course_list(session):
                    'STC', 'Số lượng LHP', 'Mã lớp']
         print(tabulate(data, headers, tablefmt='grid'))
 
+
 def main():
-    USER_NAME = os.getenv("USER_NAME") or "207CT40540"
-    PASSWORD = os.getenv("PASSWORD") or "16012002"
+    USER_NAME = os.getenv("USER_NAME")
+    PASSWORD = os.getenv("PASSWORD")
+    print(USER_NAME, PASSWORD)
     session = login(USER_NAME, PASSWORD)
     if session:
         display_course_list(session)
+
 
 if __name__ == "__main__":
     main()

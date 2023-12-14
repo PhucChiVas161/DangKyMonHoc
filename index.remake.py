@@ -1,11 +1,24 @@
 from bs4 import BeautifulSoup
 import requests
 from tabulate import tabulate
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 import json
 
-load_dotenv()
+# load_dotenv()
+
+
+def disclaimer():
+    print('****************************************************************************************************************************************************************************')
+    print('*                                                                          Tuyên bố miễn trừ trách nhiệm                                                                   *')
+    print('*                                          Mục đích: Công cụ này được phát triển nhằm mục đích hỗ trợ sinh viên đăng ký môn học trực tuyến.                                *')
+    print('*                                                Trách nhiệm: Mình không chịu bất kỳ trách nhiệm nào về kết quả đăng ký của sinh viên.                                     *')
+    print('*Cách thức hoạt động: Công cụ hoạt động bằng cách truy cập vào hệ thống đăng ký trực tuyến của trường. Tuy nhiên, việc xử lý cuối cùng vẫn do hệ thống của trường thực hiện*')
+    print('*                                           Miễn trừ trách nhiệm: Mình không chịu trách nhiệm về bất kỳ sai sót hoặc hậu quả có thể xảy ra.                                *')
+    print('*                                              Trách nhiệm của người dùng: Sinh viên cần tự kiểm tra kết quả trên hệ thống của trường.                                     *')
+    print('*                                                                Liên hệ: Mọi thắc mắc vui lòng liên hệ mình.                                                              *')
+    print('*                                                                       Tác giả: PhúcChiVas và Đỗ Huy                                                                      *')
+    print('****************************************************************************************************************************************************************************')
 
 
 def login(username, password):
@@ -121,8 +134,11 @@ def register_course(session):
 
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
-    USER_NAME = os.getenv("USER_NAME")
-    PASSWORD = os.getenv("PASSWORD")
+    disclaimer()
+    # USER_NAME = os.getenv("USER_NAME")
+    # PASSWORD = os.getenv("PASSWORD")
+    USER_NAME = input('Nhập tài khoản: ')
+    PASSWORD = input('Nhập mật khẩu: ')
     session = login(USER_NAME, PASSWORD)
     if session:
         display_course_list(session)

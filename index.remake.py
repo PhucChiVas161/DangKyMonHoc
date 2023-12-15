@@ -4,6 +4,7 @@ from tabulate import tabulate
 # from dotenv import load_dotenv
 import os
 import json
+import time
 
 # load_dotenv()
 
@@ -18,6 +19,7 @@ def disclaimer():
     print('*                                              Trách nhiệm của người dùng: Sinh viên cần tự kiểm tra kết quả trên hệ thống của trường.                                     *')
     print('*                                                                Liên hệ: Mọi thắc mắc vui lòng liên hệ mình.                                                              *')
     print('*                                                                       Tác giả: PhúcChiVas và Đỗ Huy                                                                      *')
+    print('*                                                     Donate CF và phát triển thêm tool : Momo (0931323078) (Dương Ngọc Phúc)                                              *')
     print('****************************************************************************************************************************************************************************')
 
 
@@ -34,15 +36,16 @@ def login(username, password):
 
     session = requests.Session()
 
-    response = session.post(url, headers=headers, data=data)
+    response = session.post(url, headers=headers,
+                            data=data, allow_redirects=False)
 
-    if '<a href="/Login/Logout">Đăng xuất</a>' in response.text:
+    if response.status_code == 302:
         print('Đăng nhập thành công')
         # Lưu cookie vào session
         session.cookies.update(response.cookies)
         return session
     else:
-        print('Đăng nhập thất bại')
+        print('Đăng nhập thất bại. Hoặc không trong thời gian đăng ký')
         return None
 
 
@@ -61,8 +64,8 @@ def display_course_list(session):
     response = session.get(f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id="
                            )
 
-    if '<b style="color:red">Hệ Thống Đang Xử Lý. Quay lại sau 3 giây</b>' in response.text:
-        print("Dizzconme web lol sập hoài. Vui lòng thử lại sau :)))))")
+    if response.status_code == 500:
+        print("Hệ thống đang gặp vấn đề. Vui lòng thử lại sau :)))))")
     else:
         soup = BeautifulSoup(response.text, 'html.parser')
         table = soup.find('table')
@@ -93,10 +96,10 @@ def display_course_list(session):
 
 def choice_cousre(session):
     course_code = input("Nhập code: ")
-    response = session.get(f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={
-                           course_code}&registType=NKH&scheduleStudyUnitID=")
-    if '<b style="color:red">Hệ Thống Đang Xử Lý. Quay lại sau 3 giây</b>' in response.text:
-        print("Dizzconme web lol sập hoài. Vui lòng thử lại sau :)))))")
+    response = session.get(
+        f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_code}&registType=NKH&scheduleStudyUnitID=")
+    if response.status_code == 500:
+        print("Hệ thống đang gặp vấn đề. Vui lòng thử lại sau :)))))")
     else:
         soup = BeautifulSoup(response.text, 'html.parser')
         table = soup.find('table')
@@ -137,13 +140,23 @@ def main():
     disclaimer()
     # USER_NAME = os.getenv("USER_NAME")
     # PASSWORD = os.getenv("PASSWORD")
-    USER_NAME = input('Nhập tài khoản: ')
-    PASSWORD = input('Nhập mật khẩu: ')
+    # USER_NAME = input('Nhập MSSV: ')
+    # PASSWORD = input('Nhập mật khẩu: ')
+    USER_NAME = '207CT40540'
+    PASSWORD = '16012002'
     session = login(USER_NAME, PASSWORD)
     if session:
         display_course_list(session)
         choice_cousre(session)
         register_course(session)
+
+    while True:
+        try:
+            print("Nhấn Ctrl + C để thoát")
+            time.sleep(30)
+        except KeyboardInterrupt:
+            print("Đã thoát chương trình")
+        break
 
 
 if __name__ == "__main__":

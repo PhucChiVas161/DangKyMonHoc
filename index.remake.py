@@ -5,6 +5,7 @@ from tabulate import tabulate
 import os
 import json
 import time
+import random
 
 # load_dotenv()
 
@@ -23,37 +24,46 @@ def disclaimer():
     print('****************************************************************************************************************************************************************************')
 
 
-def login(username, password):
-    url = "https://regist.vlu.edu.vn"
-    headers = {
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
+def login():
+    while True:
+        USER_NAME = input('Nhập MSSV: ')
+        PASSWORD = input('Nhập mật khẩu: ')
 
-    data = {
-        "username": username,
-        "password": password
-    }
+        url = "https://regist.vlu.edu.vn"
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
 
-    session = requests.Session()
+        data = {
+            "username": USER_NAME,
+            "password": PASSWORD
+        }
 
-    response = session.post(url, headers=headers,
-                            data=data, allow_redirects=False)
+        session = requests.Session()
 
-    if response.status_code == 302:
-        print('Đăng nhập thành công')
-        # Lưu cookie vào session
-        session.cookies.update(response.cookies)
-        return session
-    else:
-        print('Đăng nhập thất bại. Hoặc không trong thời gian đăng ký')
-        return None
+        response = session.post(url, headers=headers,
+                                data=data, allow_redirects=False)
+        with open("FACT.txt", "r", encoding="utf-8") as file:
+            facts = file.readlines()
+        random_fact = random.choice(facts)
+        print(f"Đang đăng nhập...-{random_fact.strip()}")
+        if response.status_code == 302:
+            print('Đăng nhập thành công')
+            # Lưu cookie vào session
+            session.cookies.update(response.cookies)
+            return session
+        else:
+            print('Đăng nhập thất bại. Hoặc đăng không mở đăng ký môn học.')
+            try_again = input('Bạn có muốn đăng nhập lại không? (y/n): ')
+            if try_again.lower() != 'y':
+                print('Đã thoát chương trình.')
+                return None
 
 
 def display_course_list(session):
     print("Lựa chọn:")
     print("1. Kế hoạch (KH)")
     print("2. Ngoài kế hoạch (NKH)")
-
     choice = input("Chọn (1/2): ")
 
     if choice == "1":
@@ -61,68 +71,88 @@ def display_course_list(session):
     elif choice == "2":
         typeId = "NKH"
 
-    response = session.get(f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id="
-                           )
+    with open("FACT.txt", "r", encoding="utf-8") as file:
+        facts = file.readlines()
+    random_fact = random.choice(facts)
 
-    if response.status_code == 500:
-        print("Hệ thống đang gặp vấn đề. Vui lòng thử lại sau :)))))")
-    else:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        table = soup.find('table')
-        rows = table.find_all('tr')
+    while True:
+        response = session.get(
+            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id=")
 
-        data = []
-        for row in rows[1:]:  # Bỏ qua hàng tiêu đề
-            cells = row.find_all('td')
-            row_data = [cell.get_text(strip=True) for cell in cells]
+        print(
+            f"Đang lấy thông tin các môn học...-{random_fact.strip()}")
+        if response.status_code == 500:
+            print(f"Server lỗi, đang thử lại...-{random_fact.strip()}")
+            time.sleep(3)
+        else:
+            break
 
-            # Lấy đoạn mã từ thẻ <a>
-            link = row.find('a')
-            if link:
-                href = link.get('href')
-                start_index = href.index("('") + 2
-                end_index = href.index("',")
-                class_id = href[start_index:end_index]
-                row_data.append(class_id)
-            else:
-                row_data.append('')
+    soup = BeautifulSoup(response.text, 'html.parser')
+    table = soup.find('table')
+    rows = table.find_all('tr')
 
-            data.append(row_data)
+    data = []
+    for row in rows[1:]:  # Bỏ qua hàng tiêu đề
+        cells = row.find_all('td')
+        row_data = [cell.get_text(strip=True) for cell in cells]
 
-        headers = ['STT', 'Mã học phần', 'Tên học phần',
-                   'STC', 'Số lượng LHP', 'Mã lớp', 'Code lớp']
-        print(tabulate(data, headers, tablefmt='grid'))
+        # Lấy đoạn mã từ thẻ <a>
+        link = row.find('a')
+        if link:
+            href = link.get('href')
+            start_index = href.index("('") + 2
+            end_index = href.index("',")
+            class_id = href[start_index:end_index]
+            row_data.append(class_id)
+        else:
+            row_data.append('')
+
+        data.append(row_data)
+
+    headers = ['STT', 'Mã học phần', 'Tên học phần',
+               'STC', 'Số lượng LHP', 'Mã lớp', 'Code lớp']
+    print(tabulate(data, headers, tablefmt='grid'))
 
 
 def choice_cousre(session):
     course_code = input("Nhập code: ")
-    response = session.get(
-        f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_code}&registType=NKH&scheduleStudyUnitID=")
-    if response.status_code == 500:
-        print("Hệ thống đang gặp vấn đề. Vui lòng thử lại sau :)))))")
-    else:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        table = soup.find('table')
-        rows = table.find_all('tr')
 
-        data = []
-        for row in rows[1:]:  # Bỏ qua hàng tiêu đề
-            cells = row.find_all('td')
-            row_data = [cell.get_text(strip=True) for cell in cells]
+    with open("FACT.txt", "r", encoding="utf-8") as file:
+        facts = file.readlines()
+    random_fact = random.choice(facts)
+    print(f"Đang lấy thông tin các lớp học ... -{random_fact.split()}")
+    while True:
+        response = session.get(
+            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_code}&registType=NKH&scheduleStudyUnitID=")
 
-            # Lấy đoạn mã từ thẻ <input>
-            link = row.find('input')
-            if link:
-                id_attr = link.get('id')
-                row_data.append(id_attr)
-            else:
-                row_data.append('')
+        if response.status_code == 500:
+            print(f"Server lỗi, đang thử lại...-{random_fact.split()}")
+            time.sleep(3)
+        else:
+            break
 
-            data.append(row_data)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    table = soup.find('table')
+    rows = table.find_all('tr')
 
-        headers = ["STT", "Loai", "Mã LHP",
-                   "Lớp sinh hoạt", "SL còn lại", "Lịch học", "Số tiền", "Ghi chú", "Code lớp"]
-        print(tabulate(data, headers, tablefmt='grid'))
+    data = []
+    for row in rows[1:]:  # Bỏ qua hàng tiêu đề
+        cells = row.find_all('td')
+        row_data = [cell.get_text(strip=True) for cell in cells]
+
+        # Lấy đoạn mã từ thẻ <input>
+        link = row.find('input')
+        if link:
+            id_attr = link.get('id')
+            row_data.append(id_attr)
+        else:
+            row_data.append('')
+
+        data.append(row_data)
+
+    headers = ["STT", "Loai", "Mã LHP",
+               "Lớp sinh hoạt", "SL còn lại", "Lịch học", "Số tiền", "Ghi chú", "Code lớp"]
+    print(tabulate(data, headers, tablefmt='grid'))
 
 
 def register_course(session):
@@ -138,23 +168,22 @@ def register_course(session):
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
     disclaimer()
-    # USER_NAME = os.getenv("USER_NAME")
-    # PASSWORD = os.getenv("PASSWORD")
-    USER_NAME = input('Nhập MSSV: ')
-    PASSWORD = input('Nhập mật khẩu: ')
-    session = login(USER_NAME, PASSWORD)
-    if session:
+    session = login()
+
+    while session:
         display_course_list(session)
         choice_cousre(session)
         register_course(session)
 
-    while True:
         try:
-            print("Nhấn Ctrl + C để thoát")
-            time.sleep(30)
+            continue_register = input(
+                "Bạn có muốn đăng ký tiếp không? (y/n): ")
+            if continue_register.lower() != 'y':
+                print("Đã thoát chương trình.")
+                break
         except KeyboardInterrupt:
-            print("Đã thoát chương trình")
-        break
+            print("Đã thoát chương trình.")
+            break
 
 
 if __name__ == "__main__":

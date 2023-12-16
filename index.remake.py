@@ -140,10 +140,8 @@ def main():
     disclaimer()
     # USER_NAME = os.getenv("USER_NAME")
     # PASSWORD = os.getenv("PASSWORD")
-    # USER_NAME = input('Nhập MSSV: ')
-    # PASSWORD = input('Nhập mật khẩu: ')
-    USER_NAME = '207CT40540'
-    PASSWORD = '16012002'
+    USER_NAME = input('Nhập MSSV: ')
+    PASSWORD = input('Nhập mật khẩu: ')
     session = login(USER_NAME, PASSWORD)
     if session:
         display_course_list(session)

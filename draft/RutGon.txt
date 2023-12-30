@@ -1,0 +1,86 @@
+<form name="Frm">
+  <fieldset>
+    <legend>
+      <b style="color: blue; font-size: 14px"
+        >Học phần: C&#225;c nền tảng ph&#225;t triển phần mềm
+      </b>
+    </legend>
+    <div class="cn-study-unit" style="max-height: 250px; overflow-x: scroll">
+      <table class="table table-hover" style="border: 1px solid #333">
+        <thead>
+          <tr>
+            <th class="col-md-1">Chọn</th>
+            <th class="col-md-1">Loại</th>
+            <th class="col-md-1">Mã LHP</th>
+            <th class="col-md-2">Lớp sinh hoạt</th>
+
+            <th class="col-md-1">SL còn lại</th>
+
+            <th class="col-md-4">Lịch học</th>
+
+            <th class="col-md-2">Số tiền</th>
+
+            <th class="col-md-2">Ghi chú</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center">
+              <input
+                onclick="btnGetChildOfThis('232_71ITDS30103_01', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
+                type="radio"
+                class="classCheckChon"
+                style="margin-top: -7px !important"
+                id="7TE1vpkvxwu2qOR0Rzy3BmoDwPL2whP2Dif2s9Nnbo9XQilZSt2Yyz+biCLonZi9+KWIOFCWJCc="
+                name="theory"
+              />
+            </td>
+            <td style="text-align: center">L&#253; thuyết</td>
+            <td style="text-align: center"><b>232_71ITDS30103_01</b></td>
+            <td style="text-align: left">
+              71K28CNTT23 71K28CNTT20 71K28CNTT05 71K28CNTT28 71K28CNTT08
+              71K28CNTT26 71K28CNTT04 71K28CNTT07 71K28CNTT10 71K28CNTT15
+              71K28CNTT01 71K28HTTT01 71K28CNTT25 71K28CNTT18 71K28CNTT16
+              71K28CNTT12 71K28CNT
+            </td>
+
+            <td style="text-align: center">0</td>
+
+            <td style="text-align: left">
+              <div class="td-schedule">
+                Thứ 7, tiết4-6,tuần 19-31, ONLINE<br />
+              </div>
+            </td>
+
+            <td style="text-align: center"></td>
+
+            <td>Ms Team v&#224; Elearning (học với AWS)</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="pull-right">
+      <!-- bien tam, dung khi dang ky-->
+      <input type="hidden" id="chk_hidden" name="hdID" value="" />
+      <input type="hidden" id="toggle_hidden" name="toggle" value="" />
+
+      <input
+        style="width: 80px"
+        type="button"
+        class="btn a_link btn-cus1"
+        onclick="btnBack()"
+        value="Quay về"
+      />
+
+      <!--dang ky-->
+      <input
+        style="width: 80px"
+        type="button"
+        class="btn a_link btn-cus1"
+        onclick="doSubmit(); btnRegist_Click(false,'','NKH',''); "
+        value="Đăng ký"
+      />
+    </div>
+  </fieldset>
+</form>

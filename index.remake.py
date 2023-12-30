@@ -94,7 +94,7 @@ def display_course_list(session):
     data = []
     for row in rows[1:]:  # Bỏ qua hàng tiêu đề
         cells = row.find_all('td')
-        row_data = [cell.get_text(strip=True) for cell in cells]
+        row_data = [cell.get_text(strip=True) for cell in cells[:5]]
 
         # Lấy đoạn mã từ thẻ <a>
         link = row.find('a')
@@ -110,12 +110,12 @@ def display_course_list(session):
         data.append(row_data)
 
     headers = ['STT', 'Mã học phần', 'Tên học phần',
-               'STC', 'Số lượng LHP', 'Mã lớp', 'Code lớp']
-    print(tabulate(data, headers, tablefmt='grid'))
+               'STC', 'Số lượng LHP', 'Mã lớp']
+    print(tabulate(data, headers, tablefmt='fancy_grid'))
 
 
 def choice_cousre(session):
-    course_code = input("Nhập code: ")
+    course_code = input("Nhập mã lớp ở bảng trên: ")
 
     with open("FACT.txt", "r", encoding="utf-8") as file:
         facts = file.readlines()

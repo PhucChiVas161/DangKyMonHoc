@@ -47,7 +47,7 @@ def login():
             facts = file.readlines()
         random_fact = random.choice(facts)
         print(f"Đang đăng nhập...-{random_fact.strip()}")
-        if response.status_code == 302:
+        if response.status_code == 200:
             print('Đăng nhập thành công')
             # Lưu cookie vào session
             session.cookies.update(response.cookies)
@@ -60,17 +60,7 @@ def login():
                 return None
 
 
-def display_course_list(session):
-    print("Lựa chọn:")
-    print("1. Kế hoạch (KH)")
-    print("2. Ngoài kế hoạch (NKH)")
-    choice = input("Chọn (1/2): ")
-
-    if choice == "1":
-        typeId = "KH"
-    elif choice == "2":
-        typeId = "NKH"
-
+def display_course_list(session, typeId):
     with open("FACT.txt", "r", encoding="utf-8") as file:
         facts = file.readlines()
     random_fact = random.choice(facts)
@@ -114,7 +104,7 @@ def display_course_list(session):
     print(tabulate(data, headers, tablefmt='fancy_grid'))
 
 
-def choice_cousre(session):
+def choice_cousre(session, typeId):
     course_code = input("Nhập mã lớp ở bảng trên: ")
 
     with open("FACT.txt", "r", encoding="utf-8") as file:
@@ -123,7 +113,7 @@ def choice_cousre(session):
     print(f"Đang lấy thông tin các lớp học ... -{random_fact.split()}")
     while True:
         response = session.get(
-            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_code}&registType=NKH&scheduleStudyUnitID=")
+            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_code}&registType={typeId}&scheduleStudyUnitID=")
 
         if response.status_code == 500:
             print(f"Server lỗi, đang thử lại...-{random_fact.split()}")
@@ -155,10 +145,10 @@ def choice_cousre(session):
     print(tabulate(data, headers, tablefmt='grid'))
 
 
-def register_course(session):
+def register_course(session, typeId):
     course_code = input("Nhập Code cần đăng ký: ")
     response = session.get(
-        f"https://regist.vlu.edu.vn/DangKyHocPhan/DangKy?Hide={course_code}|&acceptConflict=false&classStudyUnitConflictId=&RegistType=NKH&ScheduleStudyUnitID=")
+        f"https://regist.vlu.edu.vn/DangKyHocPhan/DangKy?Hide={course_code}|&acceptConflict=false&classStudyUnitConflictId=&RegistType={typeId}&ScheduleStudyUnitID=")
     text = response.text
     json_server = json.loads(text)
     msg = json_server['Msg']
@@ -171,9 +161,17 @@ def main():
     session = login()
 
     while session:
-        display_course_list(session)
-        choice_cousre(session)
-        register_course(session)
+        print("Lựa chọn:")
+        print("1. Kế hoạch (KH)")
+        print("2. Ngoài kế hoạch (NKH)")
+        choice = input("Chọn (1/2): ")
+        if choice == "1":
+            typeId = "KH"
+        elif choice == "2":
+            typeId = "NKH"
+        display_course_list(session, typeId)
+        choice_cousre(session, typeId)
+        register_course(session, typeId)
 
         try:
             continue_register = input(

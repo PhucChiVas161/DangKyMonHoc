@@ -56,7 +56,65 @@
 
             <td>Ms Team v&#224; Elearning (học với AWS)</td>
           </tr>
+          <tr
+            class="tr-no-hover"
+            style="background: #eee; display: none; transition-duration: 400ms"
+            id="tr-of-232_71ITDS30103_01"
+          >
+            <td colspan="8">
+              <span style="font-weight: bold; margin-top: 10px">
+                LHP thực hành tương ứng với LHP lý thuyết 232_71ITDS30103_01
+                <a
+                  href="javascript:btnGetChildOfThis('232_71ITDS30103_01', '232_71ITDS30103_01,232_71ITDS30103_02,232_71ITDS30103_03,232_71ITDS30103_04,232_71ITDS30103_05,232_71ITDS30103_06,232_71ITDS30103_07')"
+                  style="float: right; font-weight: bold"
+                  >[Thu nhỏ]</a
+                >
+              </span>
+              <div style="margin-bottom: 28px; max-height: 500px">
+                <table class="table table-hover" style="border: 1px solid #333">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center" class="col-md-1">Chọn</th>
+                      <th style="text-align: center" class="col-md-1">
+                        Mã LHP
+                      </th>
 
+                      <th class="col-md-1">SL còn lại</th>
+
+                      <th class="col-md-6">Lịch học</th>
+                      <th class="col-md-2">Ghi chú</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: center">
+                        <input
+                          type="radio"
+                          class="classCheckChon"
+                          style="margin-top: -7px !important"
+                          id="7TE1vpkvxwu2qOR0Rzy3BmK0uGS+VHWgmw8Y+WtcS1xb0WBknz+qCeMKcUSCigwy6F2QRJcz3aHeeUG9UvwCL4uhGxEySupJ"
+                          name="practice_232_71ITDS30103_01"
+                        />
+                      </td>
+                      <td style="text-align: center">232_71ITDS30103_0101</td>
+
+                      <td style="text-align: center">0</td>
+
+                      <td style="text-align: left">
+                        <div class="td-schedule1">
+                          Thứ 3, tiết4-6,tuần 20-32, ONLINE<br />
+                        </div>
+                      </td>
+                      <td>Ms Team v&#224; Elearning (học với AWS)</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <span style="padding-top: 5px; float: right"
+                  ><b>Tổng: 1 LHP thực hành</b></span
+                >
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

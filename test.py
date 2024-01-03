@@ -6,36 +6,50 @@ data = f.read()
 
 soup = BeautifulSoup(data, 'html.parser')
 table = soup.find('table')
-rows = table.find_all('tr')
+rows = table.find_all('tr', class_='')
 data = []
 for row in rows[1:]:  # Bỏ qua hàng tiêu đề
     cells = row.find_all('td')
     row_data = [cell.get_text(strip=True)
                 for cell in cells if not cell.find('span')]
-    # Lấy đoạn mã từ thẻ <input>
+
     link = row.find('input')
     if link:
         id_attr = link.get('id')
         row_data.append(id_attr)
-    else:
-        row_data.append('')
     data.append(row_data)
 
-# Find the index of the "Lớp sinh hoạt" header and remove it from the headers
-header_index = -1
-headers = ["STT", "Loai", "Mã LHP", "Lớp sinh hoạt",
-           "SL còn lại", "Lịch học", "Số tiền", "Ghi chú", "Code lớp"]
-for i, header in enumerate(headers):
-    if header == "Lớp sinh hoạt":
-        header_index = i
-        break
 
-if header_index != -1:
-    headers.pop(header_index)
+# Phân chia dữ liệu thành lý thuyết và thực hành
+ly_thuyet = []
+thuc_hanh = []
 
-# Remove the "Lớp sinh hoạt" column from the table data
-for row_data in data:
-    if len(row_data) > header_index:
-        row_data.pop(header_index)
+for item in data:
+    if item and item[1] == 'Lý thuyết':
+        del item[0]
+        del item[2]
+        del item[4]
+        ly_thuyet.append(item)
+    elif item and item[0] == '':
+        del item[0]
+        thuc_hanh.append(item)
 
-print(tabulate(data, headers, tablefmt='fancy_grid'))
+# Sắp xếp danh sách lý thuyết theo thứ tự mong muốn
+ly_thuyet.sort(key=lambda x: int(x[0][-2:]))
+
+# Sắp xếp danh sách thực hành theo thứ tự mong muốn
+thuc_hanh.sort(key=lambda x: int(x[0][-2:]))
+
+table = 'fancy_grid'
+# Xuất bảng cho lý thuyết
+if ly_thuyet:
+    headers = ["Loại", "Mã LHP",
+               "SL còn lại", "Lịch Học", "Ghi Chú", "Code lớp"]
+    print("Bảng Lý thuyết:")
+    print(tabulate(ly_thuyet, headers=headers, tablefmt=table))
+
+# Xuất bảng cho thực hành
+if thuc_hanh:
+    headers2 = ["Mã lớp", "SL", 'Lịch Học', 'Ghi chú', 'Code lớp']
+    print("\nBảng Thực hành:")
+    print(tabulate(thuc_hanh, headers=headers2, tablefmt=table))

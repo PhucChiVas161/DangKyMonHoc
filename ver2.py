@@ -15,7 +15,7 @@ tbody = table.find('tbody')
 trCount = tbody.find_all(recursive=False)
 # pprint(trCount)
 headers = ["#", "Hình thức", 'Mã LHP', 'SL còn lại', 'Lịch học', "?",	'Ghi chú' , "ID"]
-headers2 = ["Mã LHP",	"SL còn lại",	"Lịch học",	"Ghi chú"]
+headers2 = ["Mã LHP",	"SL còn lại",	"Lịch học",	"Ghi chú", "ID"]
 
 for i in range(0, len(trCount)-1):
     row = trCount[i] #! td[]
@@ -40,14 +40,23 @@ for i in range(0, len(trCount)-1):
 
     else:
         cells = row.find_all('tr') #! td[]
+        data = []
         for t in cells[1:]:
-            data = []
             td = t.find_all('td')
-            tdBody = td[1:]
-            row_data = [tde.getText(strip=True) for tde in tdBody]
+            row_data = []
+            for tdi in range(0,len(td)-1):
+                tde = td[tdi]
+                if(tdi==0):
+                    inp = tde.find('input')
+                    if inp:
+                        id_attr = inp.get('id')
+                        row_data.append(id_attr)
+                else:
+                    row_data.insert(tdi-1,tde.getText(strip=True))
+                    
             data.append(row_data)
 
-            print(tabulate(data, headers=headers2, tablefmt='grid'))
+        print(tabulate(data, headers=headers2, tablefmt='grid'))
 
 
 

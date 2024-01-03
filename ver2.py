@@ -17,7 +17,7 @@ trCount = tbody.find_all(recursive=False)
 headers = ['Loại', 'Mã LHP', 'Số lượng', 'Lịch học', 'Code lớp']
 headers2 = ["Mã LHP", "SL còn lại", "Lịch học", "Ghi chú", "ID"]
 
-for i in range(0, len(trCount)-1):
+for i in range(0, len(trCount)):
     row = trCount[i]  # ! td[]
     if (i % 2 == 0):
         data = []

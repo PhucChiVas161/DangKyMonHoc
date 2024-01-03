@@ -7,22 +7,18 @@ data = f.read()
 
 soup = BeautifulSoup(data, 'html.parser')
 
-
 table = soup.find('table')
-# print(table)
 tbody = table.find('tbody')
-# print(tbody)
 trCount = tbody.find_all(recursive=False)
-# pprint(trCount)
 headers = ['Loại', 'Mã LHP', 'Số lượng', 'Lịch học', 'Code lớp']
 headers2 = ["Mã LHP", "SL còn lại", "Lịch học", "Ghi chú", "ID"]
 
 for i in range(0, len(trCount)):
-    row = trCount[i]  # ! td[]
+    row = trCount[i]
     if (i % 2 == 0):
         data = []
 
-        cells = row.find_all('td')  # ! td[]
+        cells = row.find_all('td')
         row_data = [cell.get_text(strip=True)
                     for cell in cells if not cell.find('span') and cell.get_text(strip=True) != '']
 
@@ -40,8 +36,7 @@ for i in range(0, len(trCount)):
         print(tabulate(data, headers=headers, tablefmt='fancy_grid'))
 
     else:
-        cells = row.find_all('tr')  # ! td[]
-        data = []
+        cells = row.find_all('tr')
         for t in cells[1:]:
             td = t.find_all('td')
             row_data = []

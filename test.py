@@ -34,12 +34,6 @@ for item in data:
         del item[0]
         thuc_hanh.append(item)
 
-# Sắp xếp danh sách lý thuyết theo thứ tự mong muốn
-ly_thuyet.sort(key=lambda x: int(x[0][-2:]))
-
-# Sắp xếp danh sách thực hành theo thứ tự mong muốn
-thuc_hanh.sort(key=lambda x: int(x[0][-2:]))
-
 table = 'fancy_grid'
 # Xuất bảng cho lý thuyết
 if ly_thuyet:

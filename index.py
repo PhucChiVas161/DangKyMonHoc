@@ -63,7 +63,7 @@ def login():
 def display_course_list(session, typeId):
     while True:
         response = session.get(
-            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id=1")
+            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id=")
         print(Fore.YELLOW +
               f"Đang lấy thông tin các môn học...-{random_fact.strip()}")
         if response.status_code != 200:
@@ -96,71 +96,69 @@ def display_course_list(session, typeId):
 
 def choice_cousre(session, typeId):
     course_code = input("Nhập mã lớp ở bảng trên: ")
-    print(f"Đang lấy thông tin các lớp học ... -{random_fact.split()}")
     while True:
         response = session.get(
             f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_code}&registType={typeId}&scheduleStudyUnitID=")
+        print(f"Đang lấy thông tin các lớp học ... -{random_fact.strip()}")
         if response.status_code != 200:
             print(Fore.RED +
-                  f"Server lỗi, đang thử lại...-{random_fact.split()}")
+                  f"Server lỗi, đang thử lại...-{random_fact.strip()}")
             time.sleep(3)
         else:
             break
     soup = BeautifulSoup(response.text, 'html.parser')
     table = soup.find('table')
-    tbody = table.find('tbody')
-    trCount = tbody.find_all(recursive=False)
-    for i in range(0, len(trCount)):
-        row = trCount[i]
-        if (i % 2 == 0):
-            data = []
-            cells = row.find_all('td')
-            row_data = [cell.get_text(strip=True)
-                        for cell in cells if not cell.find('span') and cell.get_text(strip=True) != '']
-            del row_data[2]
-            inputTag = row.find('input')
-            if (inputTag):
-                row_data.append(inputTag.get('id'))
-            else:
-                row_data.append('null')
-            data.append(row_data)
-            if (len(row_data) == 6):
-                headers = ['Loại', 'Mã LHP', 'Số lượng',
-                           'Lịch học', 'Ghi chú', 'ID lớp lý thuyết']
-            else:
-                headers = ['Loại', 'Mã LHP', 'Số lượng',
-                           'Lịch học', 'ID lớp lý thuyết']
-            print(Style.BRIGHT + Fore.GREEN + '\n Bảng lý thuyết:')
-            print(Fore.GREEN + Style.NORMAL +
-                  (tabulate(data, headers=headers, tablefmt='fancy_grid')))
-        else:
-            cells = row.find_all('tr')
-            data = []
-            for t in cells[1:]:
-                tds = t.find_all('td')
-                row_data_practice = []
-                for tdi in range(0, len(tds)):
-                    tde = tds[tdi]
-                    if (tdi == 0):
-                        inp = tde.find('input')
-                        if inp:
-                            id_attr = inp.get('id')
-                            row_data_practice.append(id_attr)
-                    else:
-                        row_data_practice.insert(
-                            tdi-1, tde.getText(strip=True))
-                row_data_no_empty = list(filter(None, row_data_practice))
-                data.append(row_data_no_empty)
-            if (len(row_data_no_empty) == 5):
-                headers2 = ["Mã LHP", "SL còn lại",
-                            "Lịch học", "Ghi chú", 'ID lớp thực hành']
-            else:
-                headers2 = ["Mã LHP", "SL còn lại",
-                            "Lịch học", 'ID lớp thực hành']
-            print(Fore.BLUE + Style.BRIGHT +
-                  '\n Bảng thực hành tương ứng với:', row_data[1])
-            print(Fore.BLUE + Style.NORMAL + (tabulate(data,
-                                                       headers=headers2, tablefmt='mixed_grid')))
+    rows = table.find_all('tr', class_='')
+    data = []
+    for row in rows[1:]:  # Bỏ qua hàng tiêu đề
+        cells = row.find_all('td')
+        row_data = [cell.get_text(strip=True)
+                    for cell in cells if not cell.find('span')]
+
+        link = row.find('input')
+        if link:
+            id_attr = link.get('id')
+            row_data.append(id_attr)
+        data.append(row_data)
+
+    # Phân chia dữ liệu thành lý thuyết và thực hành
+    ly_thuyet = []
+    thuc_hanh = []
+    thi = []
+    for item in data:
+        if item and item[1] == 'Lý thuyết':
+            del item[0]
+            del item[2]
+            del item[4]
+            ly_thuyet.append(item)
+        elif item and item[1] == 'Thi':
+            del item[0]
+            del item[4]
+            del item[4]
+            del item[4]
+            thi.append(item)
+        elif item and item[0] == '':
+            del item[0]
+            thuc_hanh.append(item)
+
+    table = 'fancy_grid'
+    # Xuất bảng cho lý thuyết
+    if ly_thuyet:
+        headers = ["Loại", "Mã LHP",
+                   "SL còn lại", "Lịch Học", "Ghi Chú", "Code lớp"]
+        print("Bảng Lý thuyết:")
+        print(tabulate(ly_thuyet, headers=headers, tablefmt=table))
+
+    # Xuất bảng cho thực hành
+    if thuc_hanh:
+        headers2 = ["Mã lớp", "SL", 'Lịch Học', 'Ghi chú', 'Code lớp']
+        print("\nBảng Thực hành:")
+        print(tabulate(thuc_hanh, headers=headers2, tablefmt=table))
+
+    if thi:
+        headers3 = ['Loại', 'Mã LHP', 'Lớp sinh hoạt',
+                    'SL', 'Ghi chú', 'ID Lớp học']
+        print(tabulate(thi, headers=headers3, tablefmt=table))
 
 
 def register_course(session, typeId):

@@ -5,6 +5,8 @@ import os
 import json
 import time
 import random
+import tkinter as tk
+from tkinter import ttk
 
 
 def disclaimer():
@@ -23,8 +25,9 @@ def disclaimer():
 
 def login():
     while True:
-        USER_NAME = input('Nhập MSSV: ')
-        PASSWORD = input('Nhập mật khẩu: ')
+        USER_NAME = input("Nhập MSSV")
+        PASSWORD = input("Nhập mật khẩu")
+        print(USER_NAME)
         url = "https://regist.vlu.edu.vn"
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -109,8 +112,6 @@ def choice_cousre(session, typeId):
     table = soup.find('table')
     tbody = table.find('tbody')
     trCount = tbody.find_all(recursive=False)
-    headers = ['Loại', 'Mã LHP', 'Số lượng', 'Lịch học', 'Code lớp']
-    headers2 = ["Mã LHP", "SL còn lại", "Lịch học", "Ghi chú", "ID"]
     for i in range(0, len(trCount)):
         row = trCount[i]
         if (i % 2 == 0):
@@ -119,21 +120,28 @@ def choice_cousre(session, typeId):
             row_data = [cell.get_text(strip=True)
                         for cell in cells if not cell.find('span') and cell.get_text(strip=True) != '']
             del row_data[2]
-            # ? Add id from input tag
             inputTag = row.find('input')
             if (inputTag):
                 row_data.append(inputTag.get('id'))
             else:
                 row_data.append('null')
             data.append(row_data)
+            if (len(row_data) == 6):
+                headers = ['Loại', 'Mã LHP', 'Số lượng',
+                           'Lịch học', 'Ghi chú', 'ID lớp lý thuyết']
+            else:
+                headers = ['Loại', 'Mã LHP', 'Số lượng',
+                           'Lịch học', 'ID lớp lý thuyết']
+            print('\n Bảng lý thuyết:')
             print(tabulate(data, headers=headers, tablefmt='fancy_grid'))
         else:
-            cells = row.find_all('tr')
+            cells = row.find_all('tr')  # ! td[]
+            data = []
             for t in cells[1:]:
-                td = t.find_all('td')
+                tds = t.find_all('td')
                 row_data = []
-                for tdi in range(0, len(td)-1):
-                    tde = td[tdi]
+                for tdi in range(0, len(tds)):
+                    tde = tds[tdi]
                     if (tdi == 0):
                         inp = tde.find('input')
                         if inp:
@@ -141,8 +149,16 @@ def choice_cousre(session, typeId):
                             row_data.append(id_attr)
                     else:
                         row_data.insert(tdi-1, tde.getText(strip=True))
-                data.append(row_data)
-            print(tabulate(data, headers=headers2, tablefmt='fancy_grid'))
+                row_data_no_empty = list(filter(None, row_data))
+                data.append(row_data_no_empty)
+            if (len(row_data_no_empty) == 5):
+                headers2 = ["Mã LHP", "SL còn lại",
+                            "Lịch học", "Ghi chú", 'ID lớp thực hành']
+            else:
+                headers2 = ["Mã LHP", "SL còn lại",
+                            "Lịch học", 'ID lớp thực hành']
+            print('\n Bảng thực hành:')
+            print(tabulate(data, headers=headers2, tablefmt='mixed_grid'))
 
 
 def register_course(session, typeId):

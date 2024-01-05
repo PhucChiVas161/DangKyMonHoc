@@ -8,10 +8,6 @@ import random
 from colorama import Fore, Back, Style
 from getpass import getpass
 
-with open("FACT.txt", "r", encoding="utf-8") as file:
-    facts = file.readlines()
-random_fact = random.choice(facts)
-
 
 def disclaimer():
     print(Style.BRIGHT + Back.MAGENTA)
@@ -27,6 +23,12 @@ def disclaimer():
     print('*                                                     Donate CF và phát triển thêm tool : Momo (0931323078) (Dương Ngọc Phúc)                                              *')
     print('****************************************************************************************************************************************************************************')
     print(Back.RESET + Style.RESET_ALL)
+
+
+def random_fact():
+    with open("FACT.txt", "r", encoding="utf-8") as file:
+        facts = file.readlines()
+        return random.choice(facts).strip()
 
 
 def login():
@@ -45,7 +47,7 @@ def login():
         session = requests.Session()
         response = session.post(url, headers=headers,
                                 data=data, allow_redirects=False)
-        print(Fore.YELLOW + f"Đang đăng nhập...-{random_fact.strip()}")
+        print(Fore.YELLOW + f"Đang đăng nhập...-{random_fact()}")
         if response.status_code == 302:
             print(Fore.GREEN + 'Đăng nhập thành công')
             # Lưu cookie vào session
@@ -65,10 +67,10 @@ def display_course_list(session, typeId):
         response = session.get(
             f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id=")
         print(Fore.YELLOW +
-              f"Đang lấy thông tin các môn học...-{random_fact.strip()}")
+              f"Đang lấy thông tin các môn học...-{random_fact()}")
         if response.status_code != 200:
             print(Fore.RED +
-                  f"Server lỗi, đang thử lại...-{random_fact.strip()}")
+                  f"Server lỗi, đang thử lại...-{random_fact()}")
             time.sleep(3)
         else:
             break
@@ -96,13 +98,13 @@ def display_course_list(session, typeId):
 
 def choice_cousre(session, typeId):
     course_code = input("Nhập mã lớp ở bảng trên: ")
+    print(Fore.YELLOW + f"Đang lấy thông tin các lớp học ... -{random_fact()}")
     while True:
         response = session.get(
             f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_code}&registType={typeId}&scheduleStudyUnitID=")
-        print(f"Đang lấy thông tin các lớp học ... -{random_fact.strip()}")
         if response.status_code != 200:
             print(Fore.RED +
-                  f"Server lỗi, đang thử lại...-{random_fact.strip()}")
+                  f"Server lỗi, đang thử lại...-{random_fact()}")
             time.sleep(3)
         else:
             break
@@ -114,14 +116,11 @@ def choice_cousre(session, typeId):
         cells = row.find_all('td')
         row_data = [cell.get_text(strip=True)
                     for cell in cells if not cell.find('span')]
-
         link = row.find('input')
         if link:
             id_attr = link.get('id')
             row_data.append(id_attr)
         data.append(row_data)
-
-    # Phân chia dữ liệu thành lý thuyết và thực hành
     ly_thuyet = []
     thuc_hanh = []
     thi = []
@@ -146,30 +145,34 @@ def choice_cousre(session, typeId):
     if ly_thuyet:
         headers = ["Loại", "Mã LHP",
                    "SL còn lại", "Lịch Học", "Ghi Chú", "Code lớp"]
-        print("Bảng Lý thuyết:")
-        print(tabulate(ly_thuyet, headers=headers, tablefmt=table))
+        print(Style.BRIGHT + Fore.GREEN + "Bảng Lý thuyết:")
+        print(Style.NORMAL + Fore.GREEN +
+              (tabulate(ly_thuyet, headers=headers, tablefmt=table)))
 
     # Xuất bảng cho thực hành
     if thuc_hanh:
         headers2 = ["Mã lớp", "SL", 'Lịch Học', 'Ghi chú', 'Code lớp']
-        print("\nBảng Thực hành:")
-        print(tabulate(thuc_hanh, headers=headers2, tablefmt=table))
+        print(Style.BRIGHT + Fore.BLUE + "\nBảng Thực hành:")
+        print(Style.NORMAL + Fore.BLUE +
+              (tabulate(thuc_hanh, headers=headers2, tablefmt=table)))
 
     if thi:
         headers3 = ['Loại', 'Mã LHP', 'Lớp sinh hoạt',
                     'SL', 'Ghi chú', 'ID Lớp học']
-        print(tabulate(thi, headers=headers3, tablefmt=table))
+        print(Style.NORMAL + Fore.CYAN +
+              (tabulate(thi, headers=headers3, tablefmt=table)))
 
 
 def register_course(session, typeId):
-    course_code = input(Fore.BLUE + "Nhập ID lớp cần đăng ký " + Fore.YELLOW +
+    course_code = input(Fore.BLUE + "Nhập ID lớp cần đăng ký " + Fore.YELLOW + Style.BRIGHT +
                         "(Nếu môn nào có lớp thực thành thì nhập 2 mã liên tiếp cách nhau bởi dấu '|'. Ví dụ 'ID Lý thuyết|ID thực hành' ):")
+    print(Style.RESET_ALL)
     response = session.get(
         f"https://regist.vlu.edu.vn/DangKyHocPhan/DangKy?Hide={course_code}|&acceptConflict=false&classStudyUnitConflictId=&RegistType={typeId}&ScheduleStudyUnitID=")
     text = response.text
     json_server = json.loads(text)
     msg = json_server['Msg']
-    print(msg)
+    print(Fore.GREEN + Style.BRIGHT + f'{msg}')
 
 
 def main():

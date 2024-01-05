@@ -78,6 +78,7 @@ def display_course_list(session, typeId):
     table = soup.find('table')
     rows = table.find_all('tr')
     data = []
+    selected_row = None
     for row in rows[1:]:
         cells = row.find_all('td')
         row_data = [cell.get_text(strip=True) for cell in cells[:5]]
@@ -91,17 +92,21 @@ def display_course_list(session, typeId):
         else:
             row_data.append('')
         data.append(row_data)
-    headers = ['STT', 'Mã học phần', 'Tên học phần',
-               'STC', 'Số lượng LHP', 'Mã lớp']
-    print(Fore.LIGHTCYAN_EX + (tabulate(data, headers, tablefmt='fancy_grid')))
+    headers = ['STT', 'STT (Đừng quan tâm)', 'Mã học phần', 'Tên học phần',
+               'STC', 'Số lượng LHP']
+    print(Fore.LIGHTCYAN_EX + (tabulate(data, headers,
+          tablefmt='fancy_grid', showindex="always")))
+    row_number = int(input("Nhập STT môn học cần đăng ký: "))
+    selected_row = data[row_number]
+    class_id = selected_row[-1]
+    return class_id
 
 
-def choice_cousre(session, typeId):
-    course_code = input("Nhập mã lớp ở bảng trên: ")
+def choice_cousre(session, typeId, class_id):
     print(Fore.YELLOW + f"Đang lấy thông tin các lớp học ... -{random_fact()}")
     while True:
         response = session.get(
-            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_code}&registType={typeId}&scheduleStudyUnitID=")
+            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={class_id}&registType={typeId}&scheduleStudyUnitID=")
         if response.status_code != 200:
             print(Fore.RED +
                   f"Server lỗi, đang thử lại...-{random_fact()}")
@@ -143,24 +148,24 @@ def choice_cousre(session, typeId):
     table = 'fancy_grid'
     # Xuất bảng cho lý thuyết
     if ly_thuyet:
-        headers = ["Loại", "Mã LHP",
+        headers = ["STT", "Loại", "Mã LHP",
                    "SL còn lại", "Lịch Học", "Ghi Chú", "Code lớp"]
         print(Style.BRIGHT + Fore.GREEN + "Bảng Lý thuyết:")
         print(Style.NORMAL + Fore.GREEN +
-              (tabulate(ly_thuyet, headers=headers, tablefmt=table)))
+              (tabulate(ly_thuyet, headers=headers, tablefmt=table, showindex=True)))
 
     # Xuất bảng cho thực hành
     if thuc_hanh:
-        headers2 = ["Mã lớp", "SL", 'Lịch Học', 'Ghi chú', 'Code lớp']
+        headers2 = ["STT", "Mã lớp", "SL", 'Lịch Học', 'Ghi chú', 'Code lớp']
         print(Style.BRIGHT + Fore.BLUE + "\nBảng Thực hành:")
         print(Style.NORMAL + Fore.BLUE +
-              (tabulate(thuc_hanh, headers=headers2, tablefmt=table)))
+              (tabulate(thuc_hanh, headers=headers2, tablefmt=table, showindex=True)))
 
     if thi:
-        headers3 = ['Loại', 'Mã LHP', 'Lớp sinh hoạt',
+        headers3 = ["STT", 'Loại', 'Mã LHP', 'Lớp sinh hoạt',
                     'SL', 'Ghi chú', 'ID Lớp học']
         print(Style.NORMAL + Fore.CYAN +
-              (tabulate(thi, headers=headers3, tablefmt=table)))
+              (tabulate(thi, headers=headers3, tablefmt=table, showindex=True)))
 
 
 def register_course(session, typeId):
@@ -188,8 +193,8 @@ def main():
             typeId = "KH"
         elif choice == "2":
             typeId = "NKH"
-        display_course_list(session, typeId)
-        choice_cousre(session, typeId)
+        class_id = display_course_list(session, typeId)
+        choice_cousre(session, typeId, class_id)
         register_course(session, typeId)
         try:
             continue_register = input(Fore.YELLOW +

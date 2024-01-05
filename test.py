@@ -1,13 +1,14 @@
 from bs4 import BeautifulSoup
 from tabulate import tabulate
 
-f = open("./draft/RutGon.txt", encoding="utf-8")
+f = open("./draft/DanhSachLopHocPhan.txt", encoding="utf-8")
 data = f.read()
 
 soup = BeautifulSoup(data, 'html.parser')
 table = soup.find('table')
 rows = table.find_all('tr', class_='')
 data = []
+selected_row = None
 for row in rows[1:]:  # Bỏ qua hàng tiêu đề
     cells = row.find_all('td')
     row_data = [cell.get_text(strip=True)
@@ -41,9 +42,15 @@ if ly_thuyet:
                "SL còn lại", "Lịch Học", "Ghi Chú", "Code lớp"]
     print("Bảng Lý thuyết:")
     print(tabulate(ly_thuyet, headers=headers, tablefmt=table))
-
+    row_number = int(input("Nhập STT lớp lý thuyết: "))
+    selected_row_theory = ly_thuyet[row_number]
 # Xuất bảng cho thực hành
 if thuc_hanh:
     headers2 = ["Mã lớp", "SL", 'Lịch Học', 'Ghi chú', 'Code lớp']
     print("\nBảng Thực hành:")
     print(tabulate(thuc_hanh, headers=headers2, tablefmt=table))
+    row_number = int(input("Nhập STT lớp thực hành: "))
+    selected_row_practice = thuc_hanh[row_number]
+
+print(f"Class ID là: {selected_row[-1]}")
+print(f"Class ID là: {selected_row[-1]}")

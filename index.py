@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from tabulate import tabulate
 import os
+import sys
 import json
 import time
 import random
@@ -26,9 +27,11 @@ def disclaimer():
 
 
 def random_fact():
-    with open("FACT.txt", "r", encoding="utf-8") as file:
+    source_path = sys._MEIPASS if hasattr(sys, '_MEIPASS') else os.path.abspath(".")
+    file_path = os.path.join(source_path, "FACT.txt")
+    with open(file_path, encoding="utf-8") as file:
         facts = file.readlines()
-        return random.choice(facts).strip()
+    return random.choice(facts).strip()
 
 
 def login():
@@ -62,7 +65,15 @@ def login():
                 return None
 
 
-def display_course_list(session, typeId):
+def display_course_list(session):
+    print(Fore.BLUE + "Lựa chọn:")
+    print(Fore.BLUE + "1. Kế hoạch (KH)")
+    print(Fore.BLUE + "2. Ngoài kế hoạch (NKH)")
+    choice = input(Fore.BLUE + "Chọn (1/2): ")
+    if choice == "1":
+        typeId = "KH"
+    elif choice == "2":
+        typeId = "NKH"
     while True:
         response = session.get(
             f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id=")
@@ -96,10 +107,10 @@ def display_course_list(session, typeId):
                'STC', 'Số lượng LHP']
     print(Fore.LIGHTCYAN_EX + (tabulate(data, headers,
           tablefmt='fancy_grid', showindex="always")))
-    row_number = int(input("Nhập STT môn học cần đăng ký: "))
+    row_number = int(input("Nhập STT(Bên trái ngoài cùng) MÔN HỌC cần đăng ký: "))
     selected_row = data[row_number]
     course_id = selected_row[-1]
-    return course_id
+    return course_id, typeId
 
 
 def choice_class_list(session, typeId, course_id):
@@ -156,33 +167,33 @@ def choice_class_list(session, typeId, course_id):
     thi_table = [row[:-1] for row in thi]
     if ly_thuyet:
         selected_row_theory = None
-        print("Bảng Lý thuyết:")
-        print(tabulate(ly_thuyet_table, headers_theory,
-              tablefmt=table, showindex=True))
+        print(Fore.GREEN + Style.BRIGHT + "Bảng Lý thuyết:")
+        print(Fore.GREEN + Style.NORMAL + (tabulate(ly_thuyet_table, headers_theory,
+              tablefmt=table, showindex=True)))
     if thuc_hanh:
         selected_row_practice = None
-        print("\nBảng Thực hành:")
-        print(tabulate(thuc_hanh_table, headers_practice,
-                       tablefmt=table, showindex=True))
+        print(Fore.BLUE + Style.BRIGHT + "\nBảng Thực hành:")
+        print(Fore.BLUE + Style.NORMAL +(tabulate(thuc_hanh_table, headers_practice,
+                       tablefmt=table, showindex=True)))
     if thi:
         selected_row_exam = None
-        print("\nBảng Thi:")
-        print(tabulate(thi_table, headers_exam, tablefmt=table, showindex=True))
+        print(Fore.LIGHTMAGENTA_EX + Style.BRIGHT + "\nBảng Thi:")
+        print(Fore.LIGHTMAGENTA_EX + Style.NORMAL +(tabulate(thi_table, headers_exam, tablefmt=table, showindex=True)))
 
     class_id_theory = ''
     class_id_practice = ''
     class_id_exam = ''
     if ly_thuyet:
-        row_number_theory = int(input("Nhập STT lớp cần đăng ký: "))
+        row_number_theory = int(input(Fore.GREEN + Style.BRIGHT + "Nhập STT lớp cần đăng ký: "))
         selected_row_theory = ly_thuyet[row_number_theory]
         class_id_theory = selected_row_theory[-1]
     if thuc_hanh:
         row_number_practice = int(
-            input("Nhập STT lớp THỰC HÀNH cần đăng ký: "))
+            input(Fore.BLUE + Style.BRIGHT +"Nhập STT lớp THỰC HÀNH cần đăng ký: "))
         selected_row_practice = thuc_hanh[row_number_practice]
         class_id_practice = selected_row_practice[-1]
     if thi:
-        row_number_exam = int(input("Nhập STT lớp THI cần đăng ký: "))
+        row_number_exam = int(input(Fore.MAGENTA + Style.BRIGHT + "Nhập STT lớp THI cần đăng ký: "))
         selected_row_exam = thi[row_number_exam]
         class_id_exam = selected_row_exam[-1]
     url_regist_class_id = f"https://regist.vlu.edu.vn/DangKyHocPhan/DangKy?Hide={class_id_theory or class_id_exam}|{
@@ -204,15 +215,7 @@ def main():
     disclaimer()
     session = login()
     while session:
-        print(Fore.BLUE + "Lựa chọn:")
-        print(Fore.BLUE + "1. Kế hoạch (KH)")
-        print(Fore.BLUE + "2. Ngoài kế hoạch (NKH)")
-        choice = input(Fore.BLUE + "Chọn (1/2): ")
-        if choice == "1":
-            typeId = "KH"
-        elif choice == "2":
-            typeId = "NKH"
-        course_id = display_course_list(session, typeId)
+        course_id, typeId = display_course_list(session)
         url_regist_class_id = choice_class_list(session, typeId, course_id)
         register_course(session, url_regist_class_id)
         try:

@@ -4,7 +4,7 @@ from colorama import Fore, Style
 
 EXCLUDE_COURSES = ["Học phần: Đánh giá năng lực tiếng Anh đầu ra "]
 
-f = open("./draft/DanhSachLopCo1Loai.txt", encoding="utf-8")
+f = open("./draft/DanhSachLopHocPhan.txt", encoding="utf-8")
 data = f.read()
 soup = BeautifulSoup(data, 'html.parser')
 table = soup.find('table')
@@ -13,7 +13,9 @@ trCount = tbody.find_all(recursive=False)
 
 legend = soup.find("legend").get_text()
 
+
 def viewTheoryAndPracticeClass():
+    stt = 1
     for i in range(0, len(trCount)):
         row = trCount[i]
         if (i % 2 == 0):
@@ -22,6 +24,7 @@ def viewTheoryAndPracticeClass():
             row_data = [cell.get_text(strip=True)
                         for cell in cells if not cell.find('span') and cell.get_text(strip=True) != '']
             del row_data[2]
+            row_data.insert(0,stt)
             inputTag = row.find('input')
             if (inputTag):
                 row_data.append(inputTag.get('id'))
@@ -29,14 +32,15 @@ def viewTheoryAndPracticeClass():
                 row_data.append('null')
             data.append(row_data)
             if (len(row_data) == 6):
-                headers = ['Loại', 'Mã LHP', 'Số lượng',
+                headers = ['STT', 'Loại', 'Mã LHP', 'Số lượng',
                         'Lịch học', 'Ghi chú', 'ID lớp lý thuyết']
             else:
-                headers = ['Loại', 'Mã LHP', 'Số lượng',
+                headers = ['STT', 'Loại', 'Mã LHP', 'Số lượng',
                         'Lịch học', 'ID lớp lý thuyết']
             print(Style.BRIGHT + Fore.GREEN + '\n Bảng lý thuyết:')
             print(Fore.GREEN + Style.NORMAL +
                 (tabulate(data, headers=headers, tablefmt='fancy_grid')))
+            stt+=1
         else:
             headers2 = []
             cells = row.find_all('tr')
@@ -54,12 +58,14 @@ def viewTheoryAndPracticeClass():
                     else:
                         row_data_practice.insert(tdi-1, tde.getText(strip=True))
                 row_data_no_empty = list(filter(None, row_data_practice))
+                row_data_no_empty.insert(0,stt)
+                stt+=1
                 data.append(row_data_no_empty)
                 if (len(row_data_no_empty) == 5):
-                    headers2 = ["Mã LHP", "SL còn lại",
+                    headers2 = ['STT', "Mã LHP", "SL còn lại",
                                 "Lịch học", "Ghi chú", 'ID lớp thực hành']
                 else:
-                    headers2 = ["Mã LHP", "SL còn lại",
+                    headers2 = ['STT', "Mã LHP", "SL còn lại",
                                 "Lịch học", 'ID lớp thực hành']
             print(Fore.BLUE + Style.BRIGHT +
                 '\n Bảng thực hành tương ứng với:', row_data[1])
@@ -67,8 +73,9 @@ def viewTheoryAndPracticeClass():
                 headers=headers2, tablefmt='mixed_grid')))
 
 
+
 def viewTheoryClass():
-    headers = ['Loại', 'Mã LHP', 'Số lượng',
+    headers = ['STT', 'Loại', 'Mã LHP', 'Số lượng',
                     'Lịch học', 'ID lớp lý thuyết']
     data = []
     for i in range(0, len(trCount)):
@@ -86,8 +93,7 @@ def viewTheoryClass():
             
     print(Style.BRIGHT + Fore.GREEN + '\n Bảng lý thuyết:')
     print(Fore.GREEN + Style.NORMAL +
-        (tabulate(data, headers=headers, tablefmt='fancy_grid')))
-
+        (tabulate(data, headers=headers, tablefmt='fancy_grid', showindex=True)))
 
 if __name__ == "__main__":
     if(legend in EXCLUDE_COURSES):

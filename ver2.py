@@ -4,7 +4,7 @@ from colorama import Fore, Style
 
 EXCLUDE_COURSES = ["Học phần: Đánh giá năng lực tiếng Anh đầu ra "]
 
-f = open("./draft/DanhSachLopHocPhan.txt", encoding="utf-8")
+f = open("./draft/DanhSachLopCo1Loai.txt", encoding="utf-8")
 data = f.read()
 soup = BeautifulSoup(data, 'html.parser')
 table = soup.find('table')
@@ -68,9 +68,11 @@ def viewTheoryAndPracticeClass():
 
 
 def viewTheoryClass():
+    headers = ['Loại', 'Mã LHP', 'Số lượng',
+                    'Lịch học', 'ID lớp lý thuyết']
+    data = []
     for i in range(0, len(trCount)):
         row = trCount[i]
-        data = []
         cells = row.find_all('td')
         row_data = [cell.get_text(strip=True)
                     for cell in cells if not cell.find('span') and cell.get_text(strip=True) != '']
@@ -81,15 +83,10 @@ def viewTheoryClass():
         else:
             row_data.append('null')
         data.append(row_data)
-        if (len(row_data) == 6):
-            headers = ['Loại', 'Mã LHP', 'Số lượng',
-                    'Lịch học', 'Ghi chú', 'ID lớp lý thuyết']
-        else:
-            headers = ['Loại', 'Mã LHP', 'Số lượng',
-                    'Lịch học', 'ID lớp lý thuyết']
-        print(Style.BRIGHT + Fore.GREEN + '\n Bảng lý thuyết:')
-        print(Fore.GREEN + Style.NORMAL +
-            (tabulate(data, headers=headers, tablefmt='fancy_grid')))
+            
+    print(Style.BRIGHT + Fore.GREEN + '\n Bảng lý thuyết:')
+    print(Fore.GREEN + Style.NORMAL +
+        (tabulate(data, headers=headers, tablefmt='fancy_grid')))
 
 
 if __name__ == "__main__":

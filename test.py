@@ -8,7 +8,6 @@ soup = BeautifulSoup(data, 'html.parser')
 table = soup.find('table')
 rows = table.find_all('tr', class_='')
 data = []
-selected_row = None
 for row in rows[1:]:  # Bỏ qua hàng tiêu đề
     cells = row.find_all('td')
     row_data = [cell.get_text(strip=True)
@@ -38,19 +37,22 @@ for item in data:
 table = 'fancy_grid'
 # Xuất bảng cho lý thuyết
 if ly_thuyet:
-    headers = ["Loại", "Mã LHP",
+    selected_row_theory = None
+    headers = ["STT", "Loại", "Mã LHP",
                "SL còn lại", "Lịch Học", "Ghi Chú", "Code lớp"]
     print("Bảng Lý thuyết:")
-    print(tabulate(ly_thuyet, headers=headers, tablefmt=table))
-    row_number = int(input("Nhập STT lớp lý thuyết: "))
-    selected_row_theory = ly_thuyet[row_number]
+    print(tabulate(ly_thuyet, headers=headers, tablefmt=table, showindex=True))
 # Xuất bảng cho thực hành
 if thuc_hanh:
-    headers2 = ["Mã lớp", "SL", 'Lịch Học', 'Ghi chú', 'Code lớp']
+    selected_row_practice = None
+    headers2 = ["STT", "Mã lớp", "SL", 'Lịch Học', 'Ghi chú', 'Code lớp']
     print("\nBảng Thực hành:")
-    print(tabulate(thuc_hanh, headers=headers2, tablefmt=table))
-    row_number = int(input("Nhập STT lớp thực hành: "))
-    selected_row_practice = thuc_hanh[row_number]
+    print(tabulate(thuc_hanh, headers=headers2, tablefmt=table, showindex=True))
 
-print(f"Class ID là: {selected_row[-1]}")
-print(f"Class ID là: {selected_row[-1]}")
+row_number_theory = int(input("Nhập STT lớp học cần đăng ký: "))
+row_number_practice = int(input("Nhập STT lớp học THỰC HÀNH cần đăng ký: "))
+selected_row_theory = ly_thuyet[row_number_theory]
+selected_row_practice = thuc_hanh[row_number_practice]
+course_id_theory = selected_row_theory[-1]
+course_id_practice = selected_row_practice[-1]
+print(f'https://abc/{course_id_theory}|{course_id_practice}')

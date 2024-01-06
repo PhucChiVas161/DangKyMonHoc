@@ -1,0 +1,403 @@
+HTTP/2 200 OK
+Cache-Control: private
+Content-Type: text/html; charset=utf-8
+Vary: Accept-Encoding
+Server: Microsoft-IIS/10.0
+X-Aspnetmvc-Version: 4.0
+X-Aspnet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+Date: Fri, 05 Jan 2024 15:44:46 GMT
+Content-Length: 19808
+
+
+
+
+<script>
+    // da kiem tra
+    function doSubmit() {
+        document.forms.Frm.hdID.value = "";
+        for (var i = 0; i < document.forms.Frm.elements.length; i++) {
+            if (document.forms.Frm.elements[i].type == "radio") {
+                if (document.forms.Frm.elements[i].checked == true) {
+                    document.forms.Frm.hdID.value += document.forms.Frm.elements[i].id + "|";
+                }
+            }
+        }
+    }
+
+    function myFunctionToggle(myDIV, flag) {
+        var x = document.getElementById(myDIV);
+        //console.log(flag);
+        debugger;
+        if (flag == true) {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    // da kiem tra
+    // acceptConflict<bool> cho phep dang ky trung lich
+    // classStudyUnitConflictId<string> LHP dang trung lich
+    // registType<string> hinh thuc dang ky
+    function btnRegist_Click(acceptConflict, classStudyUnitConflictId, registType, scheduleStudyUnitID) {
+        //$("body").css("cursor", "progress");
+        debugger;
+        $('#loading').show();               
+        $.ajax({
+            type: 'GET',
+            url: AddressUrl + '/DangKyHocPhan/DangKy?Hide=' + $('#chk_hidden').val() + '&acceptConflict=' + acceptConflict + '&classStudyUnitConflictId=' + classStudyUnitConflictId + '&RegistType=' + registType
+                + '&ScheduleStudyUnitID=' + scheduleStudyUnitID,
+            async: true,
+            dataType: 'json',
+            success: function (data) {
+                $('#loading').hide();
+                if (data.State) {// khi xu ly thanh cong
+                    
+                    if (data.Msg != "-1") {
+                        //DialogAlert("Thông báo", data.Msg, 'info');
+                        if (data.Obj == true) {// danh ky thanh cong                            
+                            alert(data.Msg);
+                            ToggleDislayStudyUnit(false); // tat moi layout
+                            GetClassStudyUnitRegisted(1); // llay tren ram, nguyen nhan la da reload lai khi dang ky thanh cong tren code server                          
+                            //myFunctionToggle($("#toggle_hidden").val(), false);                           
+                        }
+                        else {                            
+                            alert(data.Msg);
+                        }
+                    }
+                    
+                }
+                else {
+                    //$('#loading').hide();
+                    XuLyTrungLich(data, registType, scheduleStudyUnitID);
+                }
+                //$('#loading').hide();
+            }
+        }).fail(function (jqXHR, textStatus, err) {           
+            $('#loading').hide();
+        });
+        //$('#loading').hide();
+        
+    }
+
+    // da kiem tra
+    function XuLyTrungLich(data, registType, scheduleStudyUnitID) {
+        if (data.Obj == 1) {
+            $.messager.confirm(
+                "Thông báo",
+                data.Msg,
+                function (r) {
+                    if (r) {// chon ok
+                        if (data.Obj == 1) {// cho phep dk trung lich
+                            btnRegist_Click(true, data.Obj1, registType, scheduleStudyUnitID)// thuc hien lai lenh dang ky
+                        } else {
+                           // btnRegist_Click(false, data.Obj1, registType, scheduleStudyUnitID)// thuc hien lenh dang ky
+                        }
+                    }
+                    else {// chon cancel
+                        //btnRegist_Click(false, data.Obj1, registType, scheduleStudyUnitID)
+                        //if (data.Obj == 1) {
+                        //    btnRegist_Click(false, data.Obj1)
+                        //} else {
+                        //    btnRegist_Click(false, data.Obj1)
+                        //}
+                    }
+                }
+            );
+        }
+        else {
+            DialogAlert("Thông báo", data.Msg, "info");
+        }
+    }
+
+    // da kiem tra
+    function btnBack() {
+        ToggleDislayStudyUnit(false);
+        $('#cnDanhSachLHP').html("");
+    }
+
+    function btnGetChildOfThis(id, parent) {
+        //if ($('#tr-of-' + id).css('display') == 'none') {
+        //    $('#tr-of-' + id).css('display', '');
+        //}
+        //else {
+        //    $('#tr-of-' + id).css('display', 'none');
+        //}
+
+        var parentArray = parent.split(",");
+        for (i = 0; i < parentArray.length; i++) {
+            if (id != parentArray[i]) {
+                document.getElementById("tr-of-" + parentArray[i]).style.display = "none";
+            }
+            else {
+                var display = document.getElementById("tr-of-" + id).style.display;
+
+                if (display == 'none') {
+                    document.getElementById("tr-of-" + id).style.display = "";
+                }
+                else {
+                    document.getElementById("tr-of-" + id).style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+<form name="Frm">
+    <fieldset>
+        <legend><b style="color:blue;font-size:14px">Học phần: Đ&#225;nh gi&#225; năng lực tiếng Anh đầu ra </b></legend>
+        <div class="cn-study-unit" style="max-height: 250px; overflow-x: scroll">
+            <table class="table table-hover" style="border:1px solid #333;">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">Chọn</th>
+                        <th class="col-md-1">Loại</th>
+                        <th class="col-md-1">Mã LHP</th>
+                        <th class="col-md-2">Lớp sinh hoạt</th>
+                        
+                        <th class="col-md-1">SL còn lại</th>
+
+                            <th class="col-md-2">GV</th>
+
+                        <th class="col-md-4">Lịch học</th>
+
+                            <th class="col-md-2">Số tiền</th>
+
+                        <th class="col-md-2">Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <input onclick="btnGetChildOfThis('232_DTA0620_01', '')"
+                                               type="radio"
+                                               class="classCheckChon"
+                                               style="margin-top: -7px !important;"
+                                                id="1dtGn87nI5uSoydNBkdlThoXt29SragDxVR0f9XYaCvoVFJPThkpJIoKy2AKkZQY"                                                
+                                               name="theory"
+                                               checked
+                                                />
+                                    </td>
+                                    <td style="text-align:center">Thi</td>
+                                    <td style="text-align:center"><b>232_DTA0620_01</b></td>
+                                    <td style="text-align:left">K26DBK26</td>
+                                    
+                                    <td style="text-align:center">278</td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td style="text-align:left">
+                                        <div class="td-schedule"></div>
+                                    </td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td>Thi ng&#224;y 21/01</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <input onclick="btnGetChildOfThis('232_DTA0620_02', '')"
+                                               type="radio"
+                                               class="classCheckChon"
+                                               style="margin-top: -7px !important;"
+                                                id="1dtGn87nI5uQix6NciOEMMySzt2U1YiqAzUKVeptYPavqmuCsSvS8HEr8vT8ciNP"                                                
+                                               name="theory"
+                                               
+                                                />
+                                    </td>
+                                    <td style="text-align:center">Thi</td>
+                                    <td style="text-align:center"><b>232_DTA0620_02</b></td>
+                                    <td style="text-align:left">K26K26DB</td>
+                                    
+                                    <td style="text-align:center">377</td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td style="text-align:left">
+                                        <div class="td-schedule"></div>
+                                    </td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td>Thi ng&#224;y 07/04</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <input onclick="btnGetChildOfThis('232_DTA0620_04', '')"
+                                               type="radio"
+                                               class="classCheckChon"
+                                               style="margin-top: -7px !important;"
+                                                id="1dtGn87nI5tBZO95jjPjXEeyxsJnRLZQbZn8qVabAA0YHJriaryq9L8HrB3TK9Zq"                                                
+                                               name="theory"
+                                               
+                                                />
+                                    </td>
+                                    <td style="text-align:center">Thi</td>
+                                    <td style="text-align:center"><b>232_DTA0620_04</b></td>
+                                    <td style="text-align:left">K26DBK26</td>
+                                    
+                                    <td style="text-align:center">410</td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td style="text-align:left">
+                                        <div class="td-schedule"></div>
+                                    </td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td>Thi ng&#224;y 10/03</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <input onclick="btnGetChildOfThis('232_DTA0620_05', '')"
+                                               type="radio"
+                                               class="classCheckChon"
+                                               style="margin-top: -7px !important;"
+                                                id="1dtGn87nI5shrr3EDjWY63SWa5VRl98y+yy2GhYPQ/92+ox4KE5JoK7qA1u612hs"                                                
+                                               name="theory"
+                                               
+                                                />
+                                    </td>
+                                    <td style="text-align:center">Thi</td>
+                                    <td style="text-align:center"><b>232_DTA0620_05</b></td>
+                                    <td style="text-align:left">K26K26DB</td>
+                                    
+                                    <td style="text-align:center">266</td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td style="text-align:left">
+                                        <div class="td-schedule"></div>
+                                    </td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td>Thi ng&#224;y 24/03</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <input onclick="btnGetChildOfThis('232_DTA0620_06', '')"
+                                               type="radio"
+                                               class="classCheckChon"
+                                               style="margin-top: -7px !important;"
+                                                id="1dtGn87nI5vY9j7lWJhE7Q+24ER2bCY11KxWJyg68007OLBsAWTxwrTCeBzQYNya"                                                
+                                               name="theory"
+                                               
+                                                />
+                                    </td>
+                                    <td style="text-align:center">Thi</td>
+                                    <td style="text-align:center"><b>232_DTA0620_06</b></td>
+                                    <td style="text-align:left">K25K23K24</td>
+                                    
+                                    <td style="text-align:center">50</td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td style="text-align:left">
+                                        <div class="td-schedule"></div>
+                                    </td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td>Thi ng&#224;y 21/01</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <input onclick="btnGetChildOfThis('232_DTA0620_07', '')"
+                                               type="radio"
+                                               class="classCheckChon"
+                                               style="margin-top: -7px !important;"
+                                                id="1dtGn87nI5v9KDNpiGGX33YTkYmiArzaBTvFHu8HtxC9NrCbRm+Zb9uQJnhH5+RL"                                                
+                                               name="theory"
+                                               
+                                                />
+                                    </td>
+                                    <td style="text-align:center">Thi</td>
+                                    <td style="text-align:center"><b>232_DTA0620_07</b></td>
+                                    <td style="text-align:left">K24K25K23</td>
+                                    
+                                    <td style="text-align:center">22</td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td style="text-align:left">
+                                        <div class="td-schedule"></div>
+                                    </td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td>Thi ng&#224;y 24/03</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <input onclick="btnGetChildOfThis('232_DTA0620_08', '')"
+                                               type="radio"
+                                               class="classCheckChon"
+                                               style="margin-top: -7px !important;"
+                                                id="1dtGn87nI5ueYTfTvmKUKguzrZFacYdKBD7zVRjusRWu5vgI1dRPfWILxJhjUmxV"                                                
+                                               name="theory"
+                                               
+                                                />
+                                    </td>
+                                    <td style="text-align:center">Thi</td>
+                                    <td style="text-align:center"><b>232_DTA0620_08</b></td>
+                                    <td style="text-align:left">K25DBK24DB</td>
+                                    
+                                    <td style="text-align:center">25</td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td style="text-align:left">
+                                        <div class="td-schedule"></div>
+                                    </td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td>Thi ng&#224;y 21/01</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center">
+                                        <input onclick="btnGetChildOfThis('232_DTA0620_09', '')"
+                                               type="radio"
+                                               class="classCheckChon"
+                                               style="margin-top: -7px !important;"
+                                                id="1dtGn87nI5tsk333XGrDZIzu/7zKz6XiouNagrA+pP7i38JTUOKoZwAfHvmvJ8pb"                                                
+                                               name="theory"
+                                               
+                                                />
+                                    </td>
+                                    <td style="text-align:center">Thi</td>
+                                    <td style="text-align:center"><b>232_DTA0620_09</b></td>
+                                    <td style="text-align:left">K25DBK24DB</td>
+                                    
+                                    <td style="text-align:center">25</td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td style="text-align:left">
+                                        <div class="td-schedule"></div>
+                                    </td>
+
+                                        <td style="text-align:center"></td>
+
+                                    <td>Thi ng&#224;y 24/03</td>
+                                </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="pull-right">
+            <!-- bien tam, dung khi dang ky-->
+            <input type="hidden" id="chk_hidden" name="hdID" value="" />
+            <input type="hidden" id="toggle_hidden" name="toggle" value="" />
+
+            <input style="width:80px" type="button" class="btn a_link btn-cus1" onclick="btnBack()" value="Quay về" />
+
+                <!--dang ky-->
+                <input style="width:80px" type="button" class="btn a_link btn-cus1" onclick="doSubmit(); btnRegist_Click(false,'','KH',''); " value="Đăng ký" />
+        </div>
+    </fieldset>
+</form>
+

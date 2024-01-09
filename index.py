@@ -3,8 +3,10 @@ from colorama import Fore
 from module.disclaimer import disclaimer
 from module.login import login
 from module.display_course_list import display_course_list
-from module.display_class_list import display_class_list
 from module.register_course import register_course
+from module.class_list.class_list import viewTheoryAndPracticeClass, decidePrompt
+
+# from module.display_class_list import display_class_list
 
 
 def main():
@@ -13,8 +15,9 @@ def main():
     session = login()
     while session:
         course_id, typeId = display_course_list(session)
-        url_regist_class_id = display_class_list(session, typeId, course_id)
-        register_course(session, url_regist_class_id)
+        viewTheoryAndPracticeClass(session, course_id, typeId)
+        url = decidePrompt(typeId)
+        register_course(session, url)
         try:
             continue_register = input(
                 Fore.YELLOW + "Bạn có muốn đăng ký tiếp không? (y/n): "

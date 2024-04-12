@@ -2,7 +2,7 @@ from colorama import Fore
 import time
 from module.random_fact import random_fact
 from bs4 import BeautifulSoup
-import tabulate
+from tabulate import tabulate
 
 
 def display_course_list(session):

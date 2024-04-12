@@ -7,7 +7,7 @@ from colorama import Fore
 import time
 
 
-def viewTheoryAndPracticeClass(course_id, typeId, session):
+def viewTheoryAndPracticeClass(session, course_id, typeId):
     while True:
         response = session.get(
             f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_id}&registType={typeId}&scheduleStudyUnitID="

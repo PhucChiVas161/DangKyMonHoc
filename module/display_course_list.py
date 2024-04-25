@@ -4,27 +4,40 @@ from module.random_fact import random_fact
 from bs4 import BeautifulSoup
 from tabulate import tabulate
 
+# Biến toàn cục để lưu trữ response
+CACHED_RESPONSE = None
+
 
 def display_course_list(session):
+    global CACHED_RESPONSE
     print(Fore.BLUE + "Lựa chọn:")
-    print(Fore.BLUE + "1. Kế hoạch (KH)")
-    print(Fore.BLUE + "2. Ngoài kế hoạch (NKH)")
+    print(Fore.BLUE + "1. Kế hoạch")
+    print(Fore.BLUE + "2. Ngoài kế hoạch (Khả dụng khi mở đăng ký bổ sung)")
     choice = input(Fore.BLUE + "Chọn (1/2): ")
     if choice == "1":
         typeId = "KH"
     elif choice == "2":
         typeId = "NKH"
-    while True:
-        response = session.get(
-            f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id="
-        )
-        print(Fore.YELLOW + f"Đang lấy thông tin các môn học...-{random_fact()}")
-        if response.status_code != 200:
-            print(Fore.RED + f"Server lỗi, đang thử lại...-{random_fact()}")
-            time.sleep(3)
-        else:
-            break
-    soup = BeautifulSoup(response.text, "html.parser")
+
+    # Kiểm tra xem biến CACHED_RESPONSE có giá trị không
+    if CACHED_RESPONSE is not None:
+        print(Fore.YELLOW + "Đang sử dụng dữ liệu được lưu trữ...")
+        soup = BeautifulSoup(CACHED_RESPONSE, "html.parser")
+    else:
+        while True:
+            response = session.get(
+                f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id="
+            )
+            print(Fore.YELLOW + f"Đang lấy thông tin các môn học...-{random_fact()}")
+            if response.status_code != 200:
+                print(Fore.RED + f"Server lỗi, đang thử lại...-{random_fact()}")
+                time.sleep(3)
+            else:
+                # Lưu response vào biến CACHED_RESPONSE
+                CACHED_RESPONSE = response.text
+                break
+
+    soup = BeautifulSoup(CACHED_RESPONSE, "html.parser")
     table = soup.find("table")
     rows = table.find_all("tr")
     data = []

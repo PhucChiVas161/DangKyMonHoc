@@ -1,7 +1,32 @@
+import os
+import time
+import pickle
 import requests
 from colorama import Fore
 from getpass import getpass
 from module.random_fact import random_fact
+
+SESSION_FILE = "login_session.pkl"
+SESSION_EXPIRATION_TIME = 1800  # 30 minutes
+
+
+def save_session(session):
+    with open(SESSION_FILE, "wb") as f:
+        pickle.dump(session, f)
+    print(Fore.GREEN + "Phiên đăng nhập đã được lưu.")
+
+
+def load_session():
+    if os.path.exists(SESSION_FILE):
+        with open(SESSION_FILE, "rb") as f:
+            session = pickle.load(f)
+        if time.time() - os.path.getmtime(SESSION_FILE) < SESSION_EXPIRATION_TIME:
+            print(Fore.GREEN + "Đang sử dụng phiên đăng nhập trước đó.")
+            return session
+        else:
+            os.remove(SESSION_FILE)
+            print(Fore.YELLOW + "Phiên đăng nhập đã hết hạn. Cần đăng nhập lại.")
+    return None
 
 
 def login():
@@ -18,8 +43,7 @@ def login():
         print(Fore.YELLOW + f"Đang đăng nhập...-{random_fact()}")
         if response.status_code == 302:
             print(Fore.GREEN + "Đăng nhập thành công")
-            # Lưu cookie vào session
-            session.cookies.update(response.cookies)
+            save_session(session)
             return session
         else:
             print(Fore.RED + "Đăng nhập thất bại. Hoặc đăng không mở đăng ký môn học.")

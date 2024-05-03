@@ -1,7 +1,7 @@
 import os
 from colorama import Fore
 from module.disclaimer import disclaimer
-from module.login import login
+from module.login import login, load_session
 from module.display_course_list import display_course_list
 from module.register_course import register_course
 from module.class_list.class_list import viewTheoryAndPracticeClass, decidePrompt
@@ -12,7 +12,16 @@ from module.class_list.class_list import viewTheoryAndPracticeClass, decidePromp
 def main():
     os.system("cls" if os.name == "nt" else "clear")
     disclaimer()
-    session = login()
+    session = load_session()
+    if session is None:
+        session = login()
+    else:
+        print("Tìm thấy phiên đăng nhập trước đó.")
+        choice = input(
+            "Chọn 1 để sử dụng phiên đăng nhập trước đó, chọn 2 để đăng nhập mới: "
+        )
+        if choice == "2":
+            session = login()
     while session:
         course_id, typeId = display_course_list(session)
         viewTheoryAndPracticeClass(session, course_id, typeId)

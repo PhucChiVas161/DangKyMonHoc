@@ -4,25 +4,30 @@ from module.random_fact import random_fact
 from bs4 import BeautifulSoup
 from tabulate import tabulate
 
-# Biến toàn cục để lưu trữ response
-CACHED_RESPONSE = None
+# Khai báo 2 biến toàn cục để lưu trữ response của mỗi option
+CACHED_RESPONSE_PLAN = None
+CACHED_RESPONSE_EXTRA = None
 
 
 def display_course_list(session):
-    global CACHED_RESPONSE
+    global CACHED_RESPONSE_PLAN, CACHED_RESPONSE_EXTRA
+
     print(Fore.BLUE + "Lựa chọn:")
     print(Fore.BLUE + "1. Kế hoạch")
     print(Fore.BLUE + "2. Ngoài kế hoạch (Khả dụng khi mở đăng ký bổ sung)")
     choice = input(Fore.BLUE + "Chọn (1/2): ")
+
     if choice == "1":
         typeId = "KH"
+        cached_response = CACHED_RESPONSE_PLAN
     elif choice == "2":
         typeId = "NKH"
+        cached_response = CACHED_RESPONSE_EXTRA
 
-    # Kiểm tra xem biến CACHED_RESPONSE có giá trị không
-    if CACHED_RESPONSE is not None:
+    # Kiểm tra xem biến cached_response có giá trị không
+    if cached_response is not None:
         print(Fore.YELLOW + "Đang sử dụng dữ liệu được lưu trữ...")
-        soup = BeautifulSoup(CACHED_RESPONSE, "html.parser")
+        soup = BeautifulSoup(cached_response, "html.parser")
     else:
         while True:
             response = session.get(
@@ -33,11 +38,15 @@ def display_course_list(session):
                 print(Fore.RED + f"Server lỗi, đang thử lại...-{random_fact()}")
                 time.sleep(3)
             else:
-                # Lưu response vào biến CACHED_RESPONSE
-                CACHED_RESPONSE = response.text
+                # Lưu response vào biến cached_response tương ứng
+                if choice == "1":
+                    CACHED_RESPONSE_PLAN = response.text
+                else:
+                    CACHED_RESPONSE_EXTRA = response.text
+                cached_response = response.text
                 break
 
-    soup = BeautifulSoup(CACHED_RESPONSE, "html.parser")
+    soup = BeautifulSoup(cached_response, "html.parser")
     table = soup.find("table")
     rows = table.find_all("tr")
     data = []

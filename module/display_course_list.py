@@ -30,13 +30,13 @@ def display_course_list(session):
         soup = BeautifulSoup(cached_response, "html.parser")
     else:
         while True:
+            print(Fore.YELLOW + f"Đang lấy thông tin các MÔN học...-{random_fact()}")
             response = session.get(
                 f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachHocPhan?typeId={typeId}&id="
             )
-            print(Fore.YELLOW + f"Đang lấy thông tin các môn học...-{random_fact()}")
             if response.status_code != 200:
                 print(Fore.RED + f"Server lỗi, đang thử lại...-{random_fact()}")
-                time.sleep(3)
+                time.sleep(1)
             else:
                 # Lưu response vào biến cached_response tương ứng
                 if choice == "1":

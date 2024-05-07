@@ -9,12 +9,13 @@ import time
 
 def viewTheoryAndPracticeClass(session, course_id, typeId):
     while True:
+        print(Fore.YELLOW + f"Đang lấy thông tin các LỚP học...-{random_fact()}")
         response = session.get(
             f"https://regist.vlu.edu.vn/DangKyHocPhan/DanhSachLopHocPhan?id={course_id}&registType={typeId}&scheduleStudyUnitID="
         )
         if response.status_code != 200:
             print(Fore.RED + f"Server lỗi, đang thử lại...-{random_fact()}")
-            time.sleep(3)
+            time.sleep(1)
         else:
             break
     soup = BeautifulSoup(response.text, "html.parser")

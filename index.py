@@ -23,20 +23,29 @@ def main():
         if choice == "2":
             session = login()
     while session:
-        course_id, typeId = display_course_list(session)
-        viewTheoryAndPracticeClass(session, course_id, typeId)
-        url = decidePrompt(typeId)
-        register_course(session, url)
         try:
+            course_id, typeId = display_course_list(session)
+            viewTheoryAndPracticeClass(session, course_id, typeId)
+            url = decidePrompt(typeId)
+            register_course(session, url)
+            try:
+                continue_register = input(
+                    Fore.YELLOW + "Bạn có muốn đăng ký tiếp không? (y/n): "
+                )
+                if continue_register.lower() != "y":
+                    print("Đã thoát chương trình.")
+                    break
+            except KeyboardInterrupt:
+                print("Đã thoát chương trình.")
+                break
+        except Exception as e:
+            print(Fore.RED + f"Lỗi: {e}")
             continue_register = input(
                 Fore.YELLOW + "Bạn có muốn đăng ký tiếp không? (y/n): "
             )
             if continue_register.lower() != "y":
                 print("Đã thoát chương trình.")
                 break
-        except KeyboardInterrupt:
-            print("Đã thoát chương trình.")
-            break
 
 
 if __name__ == "__main__":

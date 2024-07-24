@@ -41,7 +41,9 @@ def login():
         session = requests.Session()
         while True:
             print(Fore.YELLOW + f"Đang đăng nhập...-{random_fact()}")
-            response = session.post(url, headers=headers, data=data, allow_redirects=False)
+            response = session.post(
+                url, headers=headers, data=data, allow_redirects=False
+            )
             if response.status_code == 302:
                 print(Fore.GREEN + "Đăng nhập thành công")
                 save_session(session)
@@ -50,8 +52,12 @@ def login():
                 print(Fore.RED + f"Lỗi server, đang thử lại...-{random_fact()}")
                 time.sleep(1)
             else:
-                print(Fore.RED + "Đăng nhập thất bại. Hoặc đăng không mở đăng ký môn học.")
-                try_again = input(Fore.YELLOW + "Bạn có muốn đăng nhập lại không? (y/n): ")
+                print(
+                    Fore.RED + "Đăng nhập thất bại. Hoặc đăng không mở đăng ký môn học."
+                )
+                try_again = input(
+                    Fore.YELLOW + "Bạn có muốn đăng nhập lại không? (y/n): "
+                )
                 if try_again.lower() != "y":
                     print(Fore.MAGENTA + "Đã thoát chương trình.")
                     return None
